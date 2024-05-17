@@ -1,0 +1,83 @@
+.cssFix {
+    position: relative;
+  }
+  
+  .account-menu-container {
+    position: absolute;
+    top: .5em;
+    right: 1.5em;
+  }
+  
+
+  .homeBackground {
+    /* background-color: #f2f4f5; */
+  }
+ 
+  .stats__holder {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .Home__section2 {
+    display: grid;
+    grid-template-columns: 30% auto;
+    grid-gap: 1rem;
+  }
+
+  .Home__section2 div{
+    border-radius: 1rem;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .Home__section2 div canvas {
+  }
+
+  /* --------------------------------------------- */
+
+@media screen and (min-width : 320px) and (max-width : 500px) {
+  .stats__holder {
+    grid-template-columns: repeat(1,1fr);
+  }
+
+  .doughnut {
+    width: 100% !important;;
+    background-color: aqua;
+  }
+
+  .Home__section2 {
+    grid-template-columns:repeat(1,1fr) ;
+  }
+
+
+  
+}
+
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 500px ) and (max-width :800px) {
+  .stats__holder {
+    grid-template-columns: repeat(1,1fr);
+  }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+  /* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media screen 
+and (min-width : 768px) 
+and (max-width : 1080px) 
+and (orientation : landscape) {
+  .stats__holder {
+    grid-template-columns: repeat(1,1fr);
+  }
+}
+

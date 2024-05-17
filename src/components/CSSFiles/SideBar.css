@@ -1,0 +1,16 @@
+.items-styling {
+    /* color: rgb(156, 131, 131); */
+    color: rgb(193, 186, 177);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.dropDownStyling {
+    color: rgb(193, 186, 177) !important;
+
+    /* color: rgb(119, 91, 91); */
+}
+
+/* .sidebar {
+    background-color: rgb(234, 203, 218);
+} */

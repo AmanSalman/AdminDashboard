@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+.HeadingRegister{
+    font-size: 1.5em;
+    font-family: Lora;
+    color: rgb(201, 190, 196);
+}
+
+:root{
+    --maincolor :#2b3447 ;
+    --pink:rgb(182, 84, 134);
+}
+ .maincolortext {
+    color: var(--maincolor);
+ }
+ .pinkMain {
+    color: var(--pink);
+ }
+.subHeading {
+    font-size: 2em;
+    font-family: "Dancing Script", cursive;
+    color: rgb(182, 84, 134);
+}
+
+.buttonColor{
+    background-color: #2b3447  !important;
+}
+/* .flex-item-registration {
+
+    flex: 0 0 50%;
+} */
+
+
+
+
+/* .flex-item-registration  span {
+    font-size: .8em;
+} */
+
+/* .signin{
+    padding-inline: 7em;
+} */
+
+
+
+@media only screen and (min-width: 320px) and (max-width: 480px){
+    .flex-item-registration{
+        margin-bottom: 2em;
+    }
+}

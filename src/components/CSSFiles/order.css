@@ -1,0 +1,26 @@
+.generaltable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+  }
+
+  
+  .generaltable th, .generaltable td {
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .generaltable th {
+    background-color: #2b3447;
+    color: #c1c4c9;
+  }
+  
+  .generaltable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .generaltable tbody tr:hover {
+    background-color: #e5e5e5;
+  }
+  

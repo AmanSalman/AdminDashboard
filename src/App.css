@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+body{
+	font-family: "Montserrat", sans-serif; 
+}
+
+Link {
+    text-decoration: none;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+	.sidebarFlex{
+		padding-right: 0px !important;
+		padding-left: 0px !important;
+		min-height:auto  !important;
+		padding: 20px;
+	}
+	.LogoDropdown{
+		justify-content: center;
+	}
+	.LogoDropdown img {
+		margin-bottom: 20px;
+	}
+	.fixWrapSmall{
+		flex-wrap: wrap;
+	}
+	.table-container {
+		overflow-x: auto;
+	  }
+	  .col-auto {
+		/* Resetting the styles to their default values */
+		flex: unset !important; /* or unset */
+		width: auto !important;
+	}
+
+	input, textarea {
+		width: 100% !important;
+	}
+  }
+  
+  .border {
+	border: 2px solid #ccc;
+  }
+
+  /* Side Bar */
+  .items-styling , .dropDownStyling{
+	color: #c1c4c9;
+	font-family: "Montserrat", "helvetica neue", Arial, sans-serif;
+	text-transform: uppercase;
+	line-height: 30px !important;
+	font-size: 12px !important;
+  }
+  
+  .nav-link {
+	border-radius: .6em;
+    padding-left: 1.6em;
+    padding-right: 1.5em;
+	margin-bottom: 1em; 
+  }
+  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	  background-color: #5f676e !important;
+}
+
+
+.active>.page-link, .page-link.active {
+	background-color: #2b3447 !important;
+    border-color: #4c5975 !important;
+	color: white !important;
+
+}
+
+.page-link {
+	color: #2b3447 !important;
+}
+
+
+.pagination {
+	flex-direction: row;
+}

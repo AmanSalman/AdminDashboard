@@ -85,17 +85,31 @@ function AddCategory() {
     ));
 
     return (
+
+        <>
+        
+        <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item active" aria-current="page">
+            Pages
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Category
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Add Category
+          </li>
+        </ol>
+      </nav>
         <div className='cssFix w-100 border' style={{ background: 'white', borderRadius: '18px' }}>
             {loading ? (<Loader />) :
-                <>
-                    <h2 className='text-uppercase heading'>ADD Category :</h2>
                     <form onSubmit={formik.handleSubmit} encType='multipart/form-data' style={styles.container}>
                         {renderInputs}
                         <button type="submit" style={styles.button} disabled={!formik.isValid}>Add Category</button>
                     </form>
-                </>
             }
         </div>
+        </>
     );
 };
 

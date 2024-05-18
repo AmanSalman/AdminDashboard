@@ -5,7 +5,7 @@ import { PiBooks } from 'react-icons/pi';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { BiCategory } from 'react-icons/bi';
 import { FaTruck, FaUsers } from 'react-icons/fa';
-
+import logo from "../../assets/Logo.png";
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
@@ -17,6 +17,9 @@ const Dashboard = () => {
         <div className="containercustom">
             <div className="child">
                 <div className="Dashboardsec1">
+                    <div className="logo-img">
+                        <img src={logo} alt="logo" />
+                    </div>
                     <span className="DashTitle">DASHBOARD</span>
                     <ul>
                         <li><Link to={'/'}>Home</Link></li>
@@ -25,15 +28,6 @@ const Dashboard = () => {
                 <div className="Dashboardsec2">
                     <span className="DashTitle">PAGES</span>
                     <ul>
-                        {/* <li>
-                            <a href="#" className="dropdown-toggle" onClick={toggleDropdown}>Book</a>
-                            <ul className={`dropdown-menu ${isOpen ? 'show' : ''}`}>
-                                <li><a href="#">Fiction</a></li>
-                                <li><a href="#">Non-Fiction</a></li>
-                                <li><a href="#">Sci-Fi</a></li>
-                            </ul>
-                        </li> */}
-
                         <li>
                         <FaTruck className='DashIcon' />
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 99+</span>

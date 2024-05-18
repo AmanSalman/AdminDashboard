@@ -10,6 +10,8 @@ import { FaUsers } from 'react-icons/fa';
 import { IoBagCheck } from 'react-icons/io5';
 import { BsBoxes } from 'react-icons/bs';
 import MyChart from './myChart.jsx';
+import { BiUser } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 function Home() {
   ChartJS.register(ArcElement, Tooltip, Legend);
   const [orders, setOrders] = useState([]);
@@ -70,13 +72,22 @@ function Home() {
 
 
   return (
-    <div className="position-relative homeBackground h-100">
+    <div className="position-relative h-100">
+      <div className="headerContent">
+
+    <div className="dropdown">
+  <Link to={'/profile'}>
+    <BiUser className='profile-Icon ' />
+  </Link>
+</div>
+
 		<nav aria-label="breadcrumb">
   <ol className="breadcrumb">
     <li className="breadcrumb-item active" aria-current="page">Dashboard</li>
     <li className="breadcrumb-item active" aria-current="page">Home</li>
   </ol>
 </nav>
+      </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <div className='stats__holder'>

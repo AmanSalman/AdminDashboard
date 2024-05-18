@@ -268,11 +268,23 @@ const AddBook = () => {
     }
 
     return (
+
+        <>
+         <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item active" aria-current="page">
+            Pages
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Book
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Add Book
+          </li>
+        </ol>
+      </nav>
         <div className='cssFix w-100 border' style={{background: 'white',
         borderRadius: '18px'}}>
-
-            <>
-            <h2 className='text-uppercase heading'>ADD Book :</h2>
             <form onSubmit={formik.handleSubmit} style={styles.container} encType='multipart/form-data'>
                 {renderInputs}
                 <textarea
@@ -285,9 +297,8 @@ const AddBook = () => {
                 />
                 <button type="submit" style={styles.button} disabled={!formik.isValid}>Add Book</button>
             </form>
-            </>
-
         </div>
+        </>
     );
 };
 

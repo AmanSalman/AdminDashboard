@@ -120,6 +120,10 @@ button {
   cursor: pointer;
 }
 
+.profile-button {
+  background-color: rgb(163, 163, 214) !important;
+}
+
 
 @media (max-width: 768px) {
   .profile-container {

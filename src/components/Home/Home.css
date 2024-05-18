@@ -1,19 +1,4 @@
-.cssFix {
-    position: relative;
-  }
-  
-  .account-menu-container {
-    position: absolute;
-    top: .5em;
-    right: 1.5em;
-  }
-  
-
-  .homeBackground {
-    /* background-color: #f2f4f5; */
-  }
- 
-  .stats__holder {
+.stats__holder {
     display:grid;
     grid-template-columns: repeat(3,1fr);
     grid-gap: 1rem;
@@ -33,8 +18,6 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
-  .Home__section2 div canvas {
-  }
 
   /* --------------------------------------------- */
 
@@ -45,19 +28,13 @@
 
   .doughnut {
     width: 100% !important;;
-    background-color: aqua;
   }
 
   .Home__section2 {
     grid-template-columns:repeat(1,1fr) ;
   }
-
-
-  
 }
 
-
-/* Smartphones (landscape) ----------- */
 @media only screen 
 and (min-width : 500px ) and (max-width :800px) {
   .stats__holder {
@@ -65,13 +42,7 @@ and (min-width : 500px ) and (max-width :800px) {
   }
 }
 
-/* Smartphones (portrait) ----------- */
-@media only screen 
-and (max-width : 320px) {
-  /* Styles */
-}
 
-/* iPads (landscape) ----------- */
 @media screen 
 and (min-width : 768px) 
 and (max-width : 1080px) 
@@ -81,3 +52,33 @@ and (orientation : landscape) {
   }
 }
 
+/* Profile Icon */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown-menu.show {
+  background-color: rgb(163, 163, 214) !important;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.profile-Icon {
+  position: absolute;
+  bottom: 0;
+  left: -5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(163, 163, 214);
+  font-size: 1.8rem;
+  border-radius: 50%;
+  padding: 3px;
+  z-index: 999; /* Ensure the icon is on top of other content */
+  background-color: rgba(255, 255, 255, 0.7); /* Optional: add a background color with transparency */
+}

@@ -25,6 +25,8 @@ import DisableUser from './components/users/DisableUser.jsx';
 import ActivateUser from './components/users/ActivateUser.jsx';
 import ChangePassword from './components/profile/ChangePassword.jsx';
 import Dashboard from './components/routes/DashBoard.jsx';
+import PageNotFound from './components/PageNotFound/PageNotFound.jsx';
+import EditProfile from './components/profile/EditProfile.jsx';
 
 
 
@@ -75,6 +77,10 @@ const router = createBrowserRouter([
         element:<Profile/>,
       },
       {
+        path:'Editprofile',
+        element:<EditProfile/>
+      },
+      {
         path:'/changepassword',
         element:<ChangePassword/>
       },
@@ -119,6 +125,10 @@ const router = createBrowserRouter([
       {
         path:'/forgotPassword',
         element:<ForgetPassword/>
+      }, 
+      {
+        path:"*",
+        element:<PageNotFound/>
       }
 ]);
   return (

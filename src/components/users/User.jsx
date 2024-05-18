@@ -57,8 +57,7 @@ function User() {
   </ol>
 </nav>
 
-        <div className='cssFix table-container border' style={{background: 'white',
-        borderRadius: '18px'}}>
+        <div className='table-container border'>
             {error != null? <Error message={error}/>:
                     <>
                         <table className='generaltable'>

@@ -47,12 +47,25 @@ function Category() {
   }
 
   return (
+
+    <>
+    <nav aria-label="breadcrumb">
+    <ol className="breadcrumb">
+      <li className="breadcrumb-item active" aria-current="page">
+        Pages
+      </li>
+      <li className="breadcrumb-item active" aria-current="page">
+        Category
+      </li>
+      <li className="breadcrumb-item active" aria-current="page">
+       Categories
+      </li>
+    </ol>
+  </nav>
     <div className='cssFix table-container border' style={{
       background: 'white',
       borderRadius: '18px'
     }}>
-      <h2 className='text-uppercase heading'>Categories :</h2>
-
       {error != null? <Error/>: <>
       
       <table className="generaltable">
@@ -108,6 +121,7 @@ function Category() {
 
    
     </div>
+    </>
   );
 
 

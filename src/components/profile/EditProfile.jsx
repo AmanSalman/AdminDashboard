@@ -3,23 +3,42 @@ import { UserContext } from '../context/User.jsx';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import Input from '../shared/Input.jsx';
-import commonStyles from '../books/commonStyles.js';
+import commonStyles from '../shared/commonStyles.js';
 import './Profile.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loader from '../Loader/Loader.jsx';
 
 function EditProfile() {
     const { token } = useContext(UserContext);
+    const [changesMade, setChangesMade] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const initialValues = {
         username: '',
         email: '',
         phone: '',
-        password: '',
-        confirmPassword: ''
     };
-    const [changesMade, setChangesMade] = useState(false); 
 
-    const onSubmit = () => {
-        console.log(formik.values);
+    const onSubmit = async (values) => {
+        setLoading(true);
+        try {
+            const {data} = await axios.patch(`${import.meta.env.VITE_API_URL2}/auth/update`, values, {
+                headers: { Authorization: `AmanGRAD__${token}` },
+            });
+            setLoading(false);
+            if(data.message == 'success') {
+                toast.success("Updated successfully");
+            }
+        } catch (error) {
+            const {response} = error;
+            toast.error(response?.data?.message || "Failed to update");
+            console.error(error);
+            setLoading(false);
+        } finally {
+            setLoading(false);
+        }
+        navigate('/profile')
     };
 
     const formik = useFormik({
@@ -27,35 +46,19 @@ function EditProfile() {
         onSubmit,
     });
 
-    const AdminDetails = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/user/profile`, { headers: { Authorization: `AmanGRAD__${token}` } });
-            console.log(data);
-            formik.setValues({
-                ...formik.values,
-                username: data.user.username,
-                email: data.user.email,
-                phone: data.user.phone,
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    useEffect(() => {
-        AdminDetails();
-    }, []);
-
     const handleInputChange = (e) => {
         formik.handleChange(e);
-        setChangesMade(true); 
+        setChangesMade(true);
     };
 
     const inputConfigurations = [
-        { id: 'username', title: 'Username', type: 'text', name: 'username', required: true },
-        { id: 'email', title: 'Email', type: 'email', name: 'email', required: true },
-        { id: 'phone', title: 'Phone', type: 'tel', name: 'phone', required: true },
+        { id: 'username', title: 'Username', type: 'text', name: 'username'},
+        { id: 'email', title: 'Email', type: 'email', name: 'email'},
+        { id: 'phone', title: 'Phone', type: 'tel', name: 'phone'},
     ];
+    if(loading){
+        return <Loader/>
+    }
 
     return (
         <>
@@ -66,7 +69,7 @@ function EditProfile() {
   </ol>
 </nav>
         <div className="profile-container">
-            <form onSubmit={formik.handleSubmit} encType='multipart/form-data' className=''>
+            <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
                 {inputConfigurations.map(input => (
                     <Input
                         key={input.id}
@@ -81,9 +84,12 @@ function EditProfile() {
                         required={input.required}
                     />
                 ))}
-                <div className="d-flex flex-column">
-                    <Link to='/changepassword' style={{  marginTop: '1rem', color:'rgb(43, 52, 71)' }}>Change Password</Link>
-                {changesMade && <button type="submit" style={{ ...styles.button, marginTop: '1rem' }}>Update Profile</button>}
+                <div className="d-flex flex-column justify-content-center">
+                    <Link to='/changepassword' style={{  marginTop: '1rem'}}>Change Password</Link>
+                    {
+                        changesMade &&(<button type="submit main-color" className='button'>Update Profile</button>)
+                    }
+            
                 </div>
             </form> 
         </div>

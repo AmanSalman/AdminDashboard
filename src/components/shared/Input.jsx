@@ -1,5 +1,5 @@
 import React from 'react';
-import commonStyles from '../books/commonStyles.js';
+import commonStyles from './commonStyles.js';
 import './File.css'
 
 export default function Input({ id, title, type, name, value, onChange, onBlur, errors, required, className,readOnly }) {

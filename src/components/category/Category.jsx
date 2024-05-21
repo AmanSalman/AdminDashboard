@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import '../CSSFiles/general.css';
 import { Link } from 'react-router-dom';
 import Loader from '../Loader/Loader.jsx';
-import '../CSSFiles/order.css';
 import Delete from '../../assets/decline.png';
 import Update from '../../assets/pen.png'
-import { toast } from 'react-toastify';
-import { useQuery } from 'react-query';
 import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 

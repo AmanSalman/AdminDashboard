@@ -6,7 +6,6 @@ import Orders from './components/orders/Orders.jsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import "./index.css";
 import DeleteBook from './components/books/DeleteBook.jsx';
-import AddBook from './components/books/AddBook.jsx';
 import AcceptOrder from './components/orders/AcceptOrder.jsx'
 import RejectOrder from './components/orders/RejectOrder.jsx';
 import Home from './components/Home/Home.jsx';
@@ -20,13 +19,15 @@ import Category from './components/category/Category.jsx';
 import UpdateBook from './components/books/UpdateBook.jsx';
 import DeleteCategory from './components/category/DeleteCategory.jsx';
 import UpdateCategory from './components/category/UpdateCategory.jsx';
-import ForgetPassword from './components/Register/ForgetPassword.jsx';
 import DisableUser from './components/users/DisableUser.jsx';
 import ActivateUser from './components/users/ActivateUser.jsx';
 import ChangePassword from './components/profile/ChangePassword.jsx';
 import Dashboard from './components/routes/DashBoard.jsx';
 import PageNotFound from './components/PageNotFound/PageNotFound.jsx';
 import EditProfile from './components/profile/EditProfile.jsx';
+import ForgetPassword from './components/Register/ForgetPassword.jsx';
+import SendCode from './components/Register/SendCode.jsx';
+import CreateBook from './components/books/CreateBook.jsx';
 
 
 
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/addbook',
-        element:<AddBook/>
+        element:<CreateBook/>
       },
       {
         path:'/Update/:slug',
@@ -124,8 +125,12 @@ const router = createBrowserRouter([
       },
       {
         path:'/forgotPassword',
+        element:<SendCode/>
+      },
+      {
+        path:'/sendcode',
         element:<ForgetPassword/>
-      }, 
+      },
       {
         path:"*",
         element:<PageNotFound/>

@@ -4,33 +4,24 @@ import './Register.css';
 import {useFormik} from 'formik';
 import axios from 'axios';
 import Loader from '../Loader/Loader.jsx';
-import {toast} from 'react-toastify';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Logo from '../../assets/Logo.png';
 
-const Register = () => {
-	const [loading, setLoading] = useState(false);
+function SendCode() {
+    const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const initialValues = {
-		username: '',
-		phone: '',
 		email: '',
-		password: '',
-		role: 'admin'
 	};
 
-	const onSubmit = async (admin, {resetForm}) => {
-		console.log(admin)
+	const onSubmit = async (user) => {
+		console.log(user)
 		try {
 			setLoading(true);
-			const {data} = await axios.post(`${
-				import.meta.env.VITE_API_URL2
-			}/auth/register`, admin);
+			const {data} = await axios.patch(`${import.meta.env.VITE_API_URL2}/auth/sendCode`, user);
 			console.log(data);
 			if (data.message == 'success') {
-				toast.success("registered successfully");
-				navigate('/login');
-				resetForm();
+				navigate('/sendcode');
 				setLoading(false);
 			} 
 			setLoading(false)
@@ -71,37 +62,9 @@ const Register = () => {
 					{/* <h2 className='text-uppercase heading text-dark'>Register :</h2> */}
                     <div className='flex-item-registration1 flex-grow-1'>
 					<div className='text-center'>
-                        <h2 className='maincolortext'>Register</h2>
+                        <h2 className='maincolortext'>Reset Password</h2>
                         </div>
                        <form onSubmit={formik.handleSubmit} style={styles.container} className=' align-items-center justify-content-center'>
-						<input type="text"
-							value={
-								formik.values.username
-							}
-							onChange={
-								formik.handleChange
-							}
-							placeholder="username"
-							style={
-								styles.input
-							}
-							id="username"
-							name="username"
-							 autoComplete='username'/>
-						<input type="tel"
-							value={
-								formik.values.phone
-							}
-							onChange={
-								formik.handleChange
-							}
-							placeholder="phone"
-							style={
-								styles.input
-							}
-							id="phone"
-							name="phone"
-							autoComplete='phone'/>
 						<input type="email"
 							value={
 								formik.values.email
@@ -116,33 +79,15 @@ const Register = () => {
 							id="email"
 							name="email"
 							autoComplete='email'/>
-						<input type="password"
-							value={
-								formik.values.publishingHouse
-							}
-							onChange={
-								formik.handleChange
-							}
-							placeholder="password"
-							style={
-								styles.input
-							}
-							id="password"
-							name="password"
-							autoComplete='current-password'
-							/>
-							<div className='d-flex'>
-							 <span className='text-black mb-3 me-1'>already have an accout? </span> 
-             <Link className='pinkMain' to='/login'>Sign in</Link>
-							</div>
-						<button type="submit" className='button'>Register</button>
+							
+						<button type="submit" className='button'>Send Code</button>
 					</form> 
                     </div>
+					
 				</div>
 		} </>
 	);
-};
-
+}
 const styles = {
 	...commonStyles,
 	textarea: {
@@ -153,4 +98,4 @@ const styles = {
 	}
 };
 
-export default Register;
+export default SendCode

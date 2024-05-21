@@ -1,6 +1,4 @@
 import React, { useContext, useState } from 'react';
-import '../CSSFiles/general.css';
-import commonStyles from '../books/commonStyles.js';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import Loader from '../Loader/Loader.jsx';
@@ -103,9 +101,9 @@ function AddCategory() {
       </nav>
         <div className='cssFix w-100 border' style={{ background: 'white', borderRadius: '18px' }}>
             {loading ? (<Loader />) :
-                    <form onSubmit={formik.handleSubmit} encType='multipart/form-data' style={styles.container}>
+                    <form onSubmit={formik.handleSubmit} encType='multipart/form-data' className='container'>
                         {renderInputs}
-                        <button type="submit" style={styles.button} disabled={!formik.isValid}>Add Category</button>
+                        <button type="submit" className='button' disabled={!formik.isValid}>Add Category</button>
                     </form>
             }
         </div>
@@ -113,8 +111,5 @@ function AddCategory() {
     );
 };
 
-const styles = {
-    ...commonStyles,
-};
 
 export default AddCategory;

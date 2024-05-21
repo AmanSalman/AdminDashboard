@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import "../CSSFiles/general.css";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader.jsx";
-import "../CSSFiles/order.css";
 import Delete from "../../assets/decline.png";
 import Update from "../../assets/pen.png";
 import { UserContext } from "../context/User.jsx";
@@ -89,8 +87,8 @@ function Books() {
       </nav>
 
       <div
-        className="cssFix table-container border"
-        style={{ background: "white", borderRadius: "18px" }}
+        className="table-container border"
+        style={{ background: "white", borderRadius: "18px", padding:'1rem' }}
       >
         {error != null ? (
           <Error message={error} />

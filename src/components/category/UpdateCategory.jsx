@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import commonStyles from '../books/commonStyles.js';
-import '../CSSFiles/general.css';
+import commonStyles from '../shared/commonStyles.js';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import Loader from '../Loader/Loader.jsx';
@@ -16,7 +15,7 @@ const UpdateCategory = () => {
     const categoryId = location.state?.id;
     const navigate = useNavigate();
     const {token} = useContext(UserContext);
-    const initialValues = {
+    const initialValues = { 
         name: '',
         status: '',
         image: '',
@@ -198,7 +197,7 @@ const UpdateCategory = () => {
                     </div>
                     <form onSubmit={formik.handleSubmit} style={styles.container}>
                         {renderInputs}
-                        <button type='submit' style={styles.button} disabled={!formik.isValid}>
+                        <button type='submit' className='button' disabled={!formik.isValid}>
                             Update Category
                         </button>
                     </form>

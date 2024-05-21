@@ -113,16 +113,13 @@ input[type="password"] {
 button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: #00B1EB;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.profile-button {
-  background-color: rgb(163, 163, 214) !important;
-}
 
 
 @media (max-width: 768px) {

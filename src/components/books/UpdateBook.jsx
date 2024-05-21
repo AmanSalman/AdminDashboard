@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import commonStyles from "./commonStyles.js";
-import "../CSSFiles/general.css";
+import commonStyles from "../shared/commonStyles.js";
 import {useFormik} from "formik";
 import axios from "axios";
 import Loader from "../Loader/Loader.jsx";

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import '../CSSFiles/general.css';
-import '../CSSFiles/order.css';
 import { Link } from 'react-router-dom';
 import Accept from '../../assets/accept (2).png';
 import Reject from '../../assets/decline.png';

@@ -2,78 +2,143 @@
 
 body{
 	font-family: "Montserrat", sans-serif; 
+	text-decoration: none !important;
 }
 
 Link {
     text-decoration: none;
 }
 
-@media only screen and (min-width: 320px) and (max-width: 480px) {
-	.sidebarFlex{
-		padding-right: 0px !important;
-		padding-left: 0px !important;
-		min-height:auto  !important;
-		padding: 20px;
-	}
-	.LogoDropdown{
-		justify-content: center;
-	}
-	.LogoDropdown img {
-		margin-bottom: 20px;
-	}
-	.fixWrapSmall{
-		flex-wrap: wrap;
-	}
-	.table-container {
-		overflow-x: auto;
-	  }
-	  .col-auto {
-		/* Resetting the styles to their default values */
-		flex: unset !important; /* or unset */
-		width: auto !important;
-	}
-
-	input, textarea {
-		width: 100% !important;
-	}
+/* Styles for the container */
+.container {
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	border-radius: 10px;
+	flex-grow: 1;
+	width: 100%;
   }
   
-  .border {
-	border: 2px solid #ccc;
+  /* Styles for the input */
+  input, select, textarea {
+	height: 40px;
+	width: 60% !important;
+	margin-bottom: 10px;
+	padding: 0 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	font-size: 16px;
+	outline: none;
   }
 
-  /* Side Bar */
-  .items-styling , .dropDownStyling{
-	color: #c1c4c9;
-	font-family: "Montserrat", "helvetica neue", Arial, sans-serif;
-	text-transform: uppercase;
-	line-height: 30px !important;
-	font-size: 12px !important;
+  @media (max-width:500px) {
+	input, select, textarea {
+        width: 100% !important;
+    }
   }
   
-  .nav-link {
-	border-radius: .6em;
-    padding-left: 1.6em;
-    padding-right: 1.5em;
-	margin-bottom: 1em; 
-  }
-  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-	  background-color: #5f676e !important;
-}
-
-
-.active>.page-link, .page-link.active {
-	background-color: #2b3447 !important;
-    border-color: #4c5975 !important;
+  /* Styles for the button */
+  .button {
+	height: auto;
+	background-color: #00B1EB !important;
+	border: none !important;
+	border-radius: 9px !important;
+	cursor: pointer !important;
 	color: white !important;
+	font-weight: 400;
+	width: fit-content !important;
+	padding: 10px 15px 10px 15px  !important;
+	margin-left: 5px !important;
+  transition: all .3s;
+  }
+  
 
+/*============ table design ============*/
+
+.generaltable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+  }
+
+  
+  .generaltable th, .generaltable td {
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .generaltable th {
+    background-color: var(--main-color);
+    color:  var(--white-color-);
+  }
+  
+  .generaltable tbody tr {
+    background-color: var(--main-color-white);
+  }
+  
+  .generaltable tbody tr:hover {
+    background-color:rgb(155, 204, 222);
+    color: var(--main-color-white);
+  }
+
+  .table-container {
+    border-radius: 18px;
+    overflow-x: auto;
+  }
+  
+
+
+/*============ Design System ============*/
+:root{
+	--main-color:#00B1EB;
+	--main-color-white:#ffffff;
 }
 
-.page-link {
-	color: #2b3447 !important;
+/*============ Text and Background colors ============*/
+.main-color-bg {
+	background-color: var(--main-color)!important;
 }
 
+.main-color-text {
+	color: var(--main-color)!important;
+}
+
+.white-color-text {
+	color: var(--main-color-white)!important;
+}
 
 .pagination {
 	flex-direction: row;
+}
+
+/*============ Fix the file Input appearance ============*/
+input[type=file] {
+    outline: none !important;
+    height: 5rem !important;
+    padding:1rem !important;
+}
+
+input[type=file]::file-selector-button {
+    margin-right: 20px;
+    background: var(--main-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover, .button:hover {
+    background: #176d8a !important;
+}
+
+
+/**/
+
+.component-container {
+	background-color: white;
+    border-radius: 18px;
+	padding: 2rem;
+	margin-top: 1.5rem;
 }

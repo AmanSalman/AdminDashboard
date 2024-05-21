@@ -2,12 +2,12 @@
 .HeadingRegister{
     font-size: 1.5em;
     font-family: Lora;
-    color: rgb(201, 190, 196);
+    color: white;
 }
 
 :root{
-    --maincolor :#2b3447 ;
-    --pink:rgb(182, 84, 134);
+    --maincolor :#00B1EB ;
+    --pink:#00B1EB;
 }
  .maincolortext {
     color: var(--maincolor);
@@ -18,11 +18,12 @@
 .subHeading {
     font-size: 2em;
     font-family: "Dancing Script", cursive;
-    color: rgb(182, 84, 134);
+    color: white;
 }
 
 .buttonColor{
-    background-color: #2b3447  !important;
+    background-color: #00B1EB  !important;
+    color: white !important;
 }
 /* .flex-item-registration {
 
@@ -41,6 +42,9 @@
 } */
 
 
+input:focus {
+    border: #00B1EB solid 1px !important;
+}
 
 @media only screen and (min-width: 320px) and (max-width: 480px){
     .flex-item-registration{

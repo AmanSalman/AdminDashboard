@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
-import commonStyles from '../books/commonStyles.js';
-import '../CSSFiles/general.css';
+import commonStyles from '../shared/commonStyles.js';
 import './Register.css';
 import {useFormik} from 'formik';
 import axios from 'axios';
@@ -46,12 +45,12 @@ const Login = () => {
 	const formik = useFormik({initialValues, onSubmit});
 
 	return (
-		<div className='d-flex align-items-center flex-wrap vh-100'>
+		<>
 			{
 			loading ? (
-				<Loader/>) : <>
+				<Loader/>) : <div className='d-flex align-items-center flex-wrap vh-100'>
 
-					<div className='d-flex justify-content-center align-items-center vh-100 flex-item-registration flex-wrap' style={{backgroundColor:'#2b3447'}}>
+					<div className='d-flex justify-content-center align-items-center vh-100 flex-item-registration flex-wrap' style={{backgroundColor:'#00B1EB'}}>
 
 						<img src={Logo}
 							alt='logo'
@@ -118,15 +117,12 @@ const Login = () => {
              <Link className='pinkMain mb-3' to='/forgotPassword'>Forget Password?</Link>
 
                             </div>
-						<button type="submit"
-							style={
-								styles.button
-						} className='buttonColor '>Sign in</button>
+						<button type="submit" className='button'>Sign in</button>
 					</form> 
                     </div>
 					
-				</>
-		} </div>
+				</div>
+		} </>
 	);
 };
 

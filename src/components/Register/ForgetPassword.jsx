@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import commonStyles from '../books/commonStyles.js';
-import '../CSSFiles/general.css';
+import commonStyles from '../shared/commonStyles.js';
 import './Register.css';
 import {useFormik} from 'formik';
 import axios from 'axios';
@@ -14,21 +13,23 @@ function ForgetPassword() {
 	const navigate = useNavigate();
 	const initialValues = {
 		email: '',
+		password:'',
+		code:''
 	};
 
-	const onSubmit = async (admin, {resetForm}) => {
-		console.log(admin)
+	const onSubmit = async (user) => {
+		console.log(user)
 		try {
 			setLoading(true);
-			const {data} = await axios.post(`${
+			console.log(user)
+			const {data} = await axios.patch(`${
 				import.meta.env.VITE_API_URL2
-			}/auth/register`, admin);
-			console.log(data);
+			}/auth/forgetPassword`, user);
+			console.log(data)
 			if (data.message == 'success') {
-				toast.success("registered successfully");
-				// navigate('/login');
-				resetForm();
-				setLoading(false);
+				toast.success("registered successfully")
+				navigate('/login')
+				setLoading(false)
 			} 
 			setLoading(false)
 		} catch (error) {
@@ -37,15 +38,18 @@ function ForgetPassword() {
 		}
 	};
 
-	const formik = useFormik({initialValues, onSubmit});
+	const formik = useFormik({
+		initialValues, 
+		onSubmit
+	});
 
 	return (
-		<div className='d-flex align-items-center flex-wrap vh-100'>
+		<>
 			{
 			loading ? (
-				<Loader/>) : <>
+				<Loader/>) : <div className='d-flex align-items-center flex-wrap vh-100'>
 
-					<div className='d-flex justify-content-center align-items-center vh-100 flex-item-registration' style={{backgroundColor:'#2b3447'}}>
+					<div className='d-flex justify-content-center align-items-center vh-100 flex-item-registration' style={{backgroundColor:'#00B1EB'}}>
 
 						<img src={Logo}
 							alt='logo'
@@ -72,29 +76,52 @@ function ForgetPassword() {
                         </div>
                        <form onSubmit={formik.handleSubmit} style={styles.container} className=' align-items-center justify-content-center'>
 						<input type="email"
+							value={formik.values.email}
+							onChange={formik.handleChange}
+							placeholder="email"
+							style={styles.input}
+							id="email"
+							name="email"
+							title="email"
+							/>
+                            <input type="password"
 							value={
-								formik.values.email
+								formik.values.password
 							}
 							onChange={
 								formik.handleChange
 							}
-							placeholder="email"
+							placeholder="password"
 							style={
 								styles.input
 							}
-							id="email"
-							name="email"
-							autoComplete='email'/>
-							
-						<button type="submit"
+							id="password"
+							name="password"
+							title="password"
+							/>
+
+                            <input type="code"
+							value={
+								formik.values.code
+							}
+							onChange={
+								formik.handleChange
+							}
+							placeholder="code"
 							style={
-								styles.button
-						} className='buttonColor'>Send Code</button>
+								styles.input
+							}
+							id="code"
+							name="code"
+							title="code"
+							/>
+							
+						<button type="submit" className='button'>Send Code</button>
 					</form> 
                     </div>
 					
-				</>
-		} </div>
+				</div>
+		} </>
 	);
 }
 const styles = {
@@ -107,4 +134,4 @@ const styles = {
 	}
 };
 
-export default ForgetPassword
+export default ForgetPassword;

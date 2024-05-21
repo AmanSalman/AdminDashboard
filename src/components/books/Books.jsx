@@ -6,6 +6,7 @@ import Delete from "../../assets/decline.png";
 import Update from "../../assets/pen.png";
 import { UserContext } from "../context/User.jsx";
 import Error from "./../shared/Error";
+
 function Books() {
   const [error, setError] = useState(null);
   const [books, setBooks] = useState([]);
@@ -16,7 +17,6 @@ function Books() {
   const fetchBooks = async () => {
     try {
       setIsLoading(true);
-      console.log(token);
       const { data } = await axios.get(
         `${import.meta.env.VITE_API_URL2}/book`,
         { headers: { Authorization: `AmanGRAD__${token}` } }
@@ -32,19 +32,15 @@ function Books() {
         setError(error.message);
       }
       setIsLoading(false);
-    } finally {
-      setIsLoading(false);
     }
-
-    navigate("/books");
   };
 
-  //pagination
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
-  const LastIndex = currentPage * recordsPerPage;
-  const firstIndex = LastIndex - recordsPerPage;
-  const records = books.slice(firstIndex, LastIndex);
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = books.slice(firstIndex, lastIndex);
   const npage = Math.ceil(books.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
@@ -55,20 +51,6 @@ function Books() {
   if (isLoading) {
     return <Loader />;
   }
-  // const DeleteBook = async (BookId) =>{
-  //   try {
-  //     const response = await axios.delete(`${import.meta.env.VITE_API_URL}/book/deletebook/${BookId}`);
-  //     if (response.data.message == 'success')import Books from './Books';
-
-  // 			toast.success(" Book Deleted successfully");
-  // 		}
-  //     // else if (response.data.message == "can't reject the order") {
-  // 		// 	toast.warn(response.data.message);
-  // 		// }
-  // 	} catch (error) {
-  // 		setError(error.message);
-  // 	}
-  // }
 
   return (
     <>
@@ -88,7 +70,7 @@ function Books() {
 
       <div
         className="table-container border"
-        style={{ background: "white", borderRadius: "18px", padding:'1rem' }}
+        style={{ background: "white", borderRadius: "18px", padding: "1rem" }}
       >
         {error != null ? (
           <Error message={error} />
@@ -99,28 +81,30 @@ function Books() {
                 <tr>
                   <th>Isbn</th>
                   <th>Title</th>
-                  <th>Category </th>
-                  <th>description</th>
-                  <th>publishingHouse</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Publishing House</th>
+                  <th>Book Image</th>
+                  <th>Status</th>
+                  <th>Stock</th>
+                  <th>Discount</th>
                   <th>Price</th>
-                  <th>Book image</th>
+                  <th>Final Price</th>
                   <th>Delete</th>
                   <th>Update</th>
                 </tr>
               </thead>
               <tbody>
-                {records?.map((book) => (
+                {records.map((book) => (
                   <tr key={book._id}>
                     <td>{book.isbn}</td>
                     <td>{book.title}</td>
                     <td>{book.categoryName}</td>
                     <td>{book.description}</td>
                     <td>{book.publishingHouse}</td>
-                    <td>{book.price}</td>
                     <td>
                       <img
-                        src={book.image.secure_url}
-                        className=" img-fluid"
+                        src={book.mainImage?.secure_url}
                         style={{
                           borderRadius: "50%",
                           width: "fit-content",
@@ -129,10 +113,15 @@ function Books() {
                         alt="Book image"
                       />
                     </td>
+                    <td>{book.status}</td>
+                    <td>{book.stock}</td>
+                    <td>{book.Discount}</td>
+                    <td>{book.price}</td>
+                    <td>{book.finalPrice}</td>
                     <td>
                       <Link
                         className="d-flex justify-content-center"
-                        to={`/delete/${book._id}`}
+                        to={`/delete/${book.id}`}
                       >
                         <img src={Delete} alt="Delete" width={"45px"} />
                       </Link>
@@ -159,36 +148,25 @@ function Books() {
               }}
             >
               <ul className="pagination">
-                <li className="page-item">
-                  <a href="#" className="page-link" onClick={prePage}>
-                    {" "}
+                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={prePage} disabled={currentPage === 1}>
                     Prev
-                  </a>
+                  </button>
                 </li>
                 {numbers.map((n, i) => (
                   <li
-                    className={`'page-item' ${
-                      currentPage === n
-                        ? "active page-item bgPrimary"
-                        : "page-item"
-                    }`}
+                    className={`page-item ${currentPage === n ? "active" : ""}`}
                     key={i}
                   >
-                    <a
-                      href="#"
-                      className="page-link"
-                      onClick={() => changeCPage(n)}
-                    >
+                    <button className="page-link" onClick={() => changeCPage(n)}>
                       {n}
-                    </a>
+                    </button>
                   </li>
                 ))}
-
-                <li className="page-item">
-                  <a href="#" className="page-link" onClick={nextPage}>
-                    {" "}
+                <li className={`page-item ${currentPage === npage ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={nextPage} disabled={currentPage === npage}>
                     Next
-                  </a>
+                  </button>
                 </li>
               </ul>
             </nav>
@@ -199,7 +177,7 @@ function Books() {
   );
 
   function prePage() {
-    if (currentPage !== 1) {
+    if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   }
@@ -209,7 +187,7 @@ function Books() {
   }
 
   function nextPage() {
-    if (currentPage !== npage) {
+    if (currentPage < npage) {
       setCurrentPage(currentPage + 1);
     }
   }

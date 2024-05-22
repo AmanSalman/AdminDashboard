@@ -28,6 +28,9 @@ import EditProfile from './components/profile/EditProfile.jsx';
 import ForgetPassword from './components/Register/ForgetPassword.jsx';
 import SendCode from './components/Register/SendCode.jsx';
 import CreateBook from './components/books/CreateBook.jsx';
+import SubImages from './components/books/SubImages.jsx';
+import AddSubIamge from './components/books/DeleteImage.jsx';
+import DeleteImage from './components/books/DeleteImage.jsx';
 
 
 
@@ -54,8 +57,16 @@ const router = createBrowserRouter([
         element:<CreateBook/>
       },
       {
-        path:'/Update/:slug',
+        path:'/Update/:id',
         element:<UpdateBook/>
+      },
+      {
+        path:'/books/update-subimages/:id',
+        element:<SubImages/>
+      },
+      {
+        path:'/deletesubimage/:public_id',
+        element:<DeleteImage/>
       },
       {
         path:'/delete/:id',

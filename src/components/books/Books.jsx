@@ -128,8 +128,7 @@ function Books() {
                     </td>
                     <td>
                       <Link
-                        to={`/Update/${book.slug}`}
-                        state={{ id: book._id }}
+                        to={`/Update/${book.id}`}
                         className="d-flex justify-content-center"
                       >
                         <img src={Update} alt="Update" width={"30px"} />

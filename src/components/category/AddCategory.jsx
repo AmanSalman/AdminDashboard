@@ -99,7 +99,7 @@ function AddCategory() {
           </li>
         </ol>
       </nav>
-        <div className='cssFix w-100 border' style={{ background: 'white', borderRadius: '18px' }}>
+        <div className='w-100 border' style={{ background: 'white', borderRadius: '18px' }}>
             {loading ? (<Loader />) :
                     <form onSubmit={formik.handleSubmit} encType='multipart/form-data' className='container'>
                         {renderInputs}

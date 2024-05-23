@@ -6,6 +6,7 @@ import Delete from "../../assets/decline.png";
 import Update from "../../assets/pen.png";
 import { UserContext } from "../context/User.jsx";
 import Error from "./../shared/Error";
+import { TbArrowBigLeftLineFilled } from "react-icons/tb";
 
 function Books() {
   const [error, setError] = useState(null);
@@ -72,6 +73,7 @@ function Books() {
         className="table-container border"
         style={{ background: "white", borderRadius: "18px", padding: "1rem" }}
       >
+        <Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
         {error != null ? (
           <Error message={error} />
         ) : (

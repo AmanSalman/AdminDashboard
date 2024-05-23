@@ -4,12 +4,17 @@ import { useForm } from 'react-hook-form';
 import './book.css';
 import { UserContext } from '../context/User';
 import { toast } from 'react-toastify';
+import { SlArrowLeft } from 'react-icons/sl';
+import { Link } from 'react-router-dom';
+import { VscArrowSmallLeft } from 'react-icons/vsc';
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 
 const CreateBook = () => {
   const { register, handleSubmit, reset } = useForm();
   const { token } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -22,8 +27,8 @@ const CreateBook = () => {
         setCategories(data.Categories);
         console.log(data.Categories);
       } catch (error) {
-        console.error('Error fetching categories:', error);
-        toast.error('Failed to load categories');
+        setError("Error while fetching categories");
+      setLoading(false);
       }
     };
 
@@ -82,6 +87,7 @@ const CreateBook = () => {
         </li>
       </ol>
       <div className="component-container d-flex flex-column bookadd">
+        <Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' /></Link>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div>
             <label htmlFor="isbn">ISBN:</label>
@@ -108,6 +114,7 @@ const CreateBook = () => {
                 </option>
               ))}
             </select>
+            {error && <p className='text-danger m-0'>{error}</p>}
           </div>
           <div>
             <label htmlFor="description">Description:</label>

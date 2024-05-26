@@ -5,21 +5,21 @@ import Loader from '../Loader/Loader.jsx';
 import { toast } from 'react-toastify';
 import { UserContext } from '../context/User.jsx';
 
-function DeleteBook() {
+function DeleteCoupon() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
 
-  const deleteBook = async () => {
+  const deletecoupon = async () => {
     try {
       setLoading(true);
-      const {data} = await axios.delete(`${import.meta.env.VITE_API_URL2}/book/${id}`, {
+      const {data} = await axios.delete(`${import.meta.env.VITE_API_URL2}/coupon/${id}`, {
         headers: { Authorization: `AmanGRAD__${token}` },
       });
 
       if (data.message === 'success') {
-        toast.success("Book deleted successfully");
+        toast.success("coupon deleted successfully");
       } 
     } catch (error) {
       const {response} = error;
@@ -27,11 +27,11 @@ function DeleteBook() {
     } finally {
       setLoading(false);
     }
-    navigate('/books'); 
+    navigate('/coupons'); 
   };
 
   useEffect(() => {
-    deleteBook();
+    deletecoupon();
   }, []);
 
   if (loading) {
@@ -41,4 +41,4 @@ function DeleteBook() {
   return( <></>)
 }
 
-export default DeleteBook;
+export default DeleteCoupon;

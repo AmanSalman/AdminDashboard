@@ -31,6 +31,10 @@ import CreateBook from './components/books/CreateBook.jsx';
 import SubImages from './components/books/SubImages.jsx';
 import AddSubIamge from './components/books/DeleteImage.jsx';
 import DeleteImage from './components/books/DeleteImage.jsx';
+import Coupon from './components/coupon/Coupon.jsx';
+import DeleteCoupon from './components/coupon/DeleteCoupon.jsx';
+import UpdateCoupon from './components/coupon/UpdateCoupon.jsx';
+import CreateCoupon from './components/coupon/CreateCoupon.jsx';
 
 
 
@@ -123,6 +127,22 @@ const router = createBrowserRouter([
       {
         path:'/categories',
         element:<Category/>
+      },
+      {
+        path:'/coupons',
+        element:<Coupon/>
+      },
+      {
+        path:'/deleteCoupon/:id',
+        element:<DeleteCoupon/>
+      },
+      {
+        path:'/UpdateCoupon/:id',
+        element:<UpdateCoupon/>
+      },
+      {
+        path:'/addcoupon',
+        element:<CreateCoupon/>
       }
     ]
   },

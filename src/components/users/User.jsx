@@ -7,6 +7,7 @@ import Reject from '../../assets/decline.png';
 import { UserContext } from '../context/User.jsx';
 import Loader from '../Loader/Loader.jsx';
 import Error from '../shared/Error.jsx';
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 
 function User() {
   const [error, setError] = useState(null);
@@ -33,7 +34,7 @@ function User() {
 
    //pagination
    const [currentPage, setCurrentPage] = useState(1);
-   const recordsPerPage = 6;
+   const recordsPerPage = 4;
    const LastIndex = currentPage * recordsPerPage;
    const firstIndex = LastIndex - recordsPerPage;
    const records = Users.slice(firstIndex, LastIndex);
@@ -55,7 +56,8 @@ function User() {
   </ol>
 </nav>
 
-        <div className='table-container border'>
+        <div className='table-container border container'>
+        <Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
             {error != null? <Error message={error}/>:
                     <>
                         <table className='generaltable'>
@@ -110,7 +112,7 @@ function User() {
                                 }
                             </tbody>
                         </table>
-                        <nav style={{display:'flex', justifyContent:'center' ,alignItems:'center'}}>
+                        <nav className='pagination-style'>
                             <ul className='pagination'>
                                 <li className='page-item'>
                                     <a href='#' className='page-link' onClick={prePage}> Prev</a>

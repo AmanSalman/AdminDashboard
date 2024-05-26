@@ -12,48 +12,93 @@ import { BsBoxes } from 'react-icons/bs';
 import MyChart from './myChart.jsx';
 import { BiUser } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 function Home() {
   ChartJS.register(ArcElement, Tooltip, Legend);
   const [orders, setOrders] = useState([]);
+  const [users,setUsers] = useState(0);
+  const [stocks,setStocks] = useState(0)
 	const [pendingCount, setPendingCount] = useState(0);
 	const [RejectedCount, setRejectedCount] = useState(0);
 	const [AcceptedCount, setAcceptedCount] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
-
-
+  const {token}= useContext(UserContext)
 	const [error, setError] = useState(null);
 
-	const {user} = useContext(UserContext);
-	const fetchOrders = async () => {
-		try {
-			const {data} = await axios.get(`${
-				import.meta.env.VITE_API_URL
-			}/order/getAllOrders`, {
-				headers: {
-					Authorization: `${user}`
-				}
-			});
-			setOrders(data.orders);
+	// const fetchOrders = async () => {
+	// 	try {
+	// 		const {data} = await axios.get(`${
+	// 			import.meta.env.VITE_API_URL
+	// 		}/order/getAllOrders`, {
+	// 			headers: {
+	// 				Authorization: `${user}`
+	// 			}
+	// 		});
+	// 		setOrders(data.orders);
 
-			// Count orders based on status
-			const pending = data.orders.filter(order => order.status === 'Pending').length;
-			const rejected = data.orders.filter(order => order.status === 'Rejected').length;
-			const accepted = data.orders.filter(order => order.status === 'Accepted').length;
+	// 		// Count orders based on status
+	// 		const pending = data.orders.filter(order => order.status === 'Pending').length;
+	// 		const rejected = data.orders.filter(order => order.status === 'Rejected').length;
+	// 		const accepted = data.orders.filter(order => order.status === 'Accepted').length;
 
-			setPendingCount(pending);
-			setRejectedCount(rejected);
-			setAcceptedCount(accepted);
-			setIsLoading(false);
-		} catch (error) {
-			setIsLoading(false)
-			setError(error.message);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	// 		setPendingCount(pending);
+	// 		setRejectedCount(rejected);
+	// 		setAcceptedCount(accepted);
+	// 		setIsLoading(false);
+	// 	} catch (error) {
+	// 		setIsLoading(false)
+	// 		setError(error.message);
+	// 	} finally {
+	// 		setIsLoading(false);
+	// 	}
+	// };
+
+  const fetchUsers = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/user/`, {
+        headers: { Authorization: `AmanGRAD__${token}` }
+      });
+      console.log(data)
+      setUsers(data.users.length);
+      console.log("Total number of users:", userCount);
+    } catch (error) {
+      setError('Error while loading the home')
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchBooks = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL2}/book`,
+        { headers: { Authorization: `AmanGRAD__${token}` } }
+      );
+      let totalStock = 0;
+      data.Books.forEach(book => {
+        totalStock += book.stock;
+      });
+      setStocks(totalStock)
+  
+      setIsLoading(false);
+    } catch (error) {
+      setError('Error while loading the home')
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  
 	useEffect(() => {
-		fetchOrders();
-	}, [user, orders]); // Fetch orders whenever user or orders change
+		// fetchOrders();
+    fetchBooks();
+    fetchUsers();
+	}, []); 
+
 		if (isLoading) {
 			return <Loader/>
 		}
@@ -91,9 +136,9 @@ function Home() {
 
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <div className='stats__holder'>
-        <StatsCard title="Today's Users" number={2300} change={<FaUsers />} color={'#00b1eb'}/>
+        <StatsCard title="Today's Users" number={users} change={<FaUsers />} color={'#00b1eb'}/>
       <StatsCard title="Orders" number={150} change={<IoBagCheck />} color={'#ed157f'} />
-      <StatsCard title="Stock" number={150}  change={<BsBoxes />} color={'#f5af2c'} />
+      <StatsCard title="Stock" number={stocks}  change={<BsBoxes />} color={'#f5af2c'} />
       {/* <StatsCard title="Active Sessions" number={150} />     */}
         </div>
         

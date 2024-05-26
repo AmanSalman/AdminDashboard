@@ -5,25 +5,25 @@ import Loader from "../Loader/Loader.jsx";
 import Delete from "../../assets/decline.png";
 import Update from "../../assets/pen.png";
 import { UserContext } from "../context/User.jsx";
-import Error from "./../shared/Error";
+import Error from "../shared/Error.jsx";
 import { TbArrowBigLeftLineFilled } from "react-icons/tb";
 
-function Books() {
+function Coupon() {
   const [error, setError] = useState(null);
-  const [books, setBooks] = useState([]);
+  const [coupons, setcoupons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
 
-  const fetchBooks = async () => {
+  const fetchcoupons = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL2}/book`,
+        `${import.meta.env.VITE_API_URL2}/coupon`,
         { headers: { Authorization: `AmanGRAD__${token}` } }
       );
-      setBooks(data.Books);
-      console.log(data.Books)
+      console.log(data)
+      setcoupons(data.coupon);
       setIsLoading(false);
     } catch (error) {
       const { response } = error;
@@ -38,15 +38,15 @@ function Books() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 3;
+  const recordsPerPage = 4;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = books.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(books.length / recordsPerPage);
+  const records = coupons.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(coupons.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
   useEffect(() => {
-    fetchBooks();
+    fetchcoupons();
   }, []);
 
   if (isLoading) {
@@ -61,16 +61,17 @@ function Books() {
             Pages
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Book
+            Coupon
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Books
+          Coupons
           </li>
         </ol>
       </nav>
 
       <div
-        className="table-container border container"
+        className="table-container border"
+        style={{ background: "white", borderRadius: "18px", padding: "1rem" }}
       >
         <Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
         {error != null ? (
@@ -80,56 +81,30 @@ function Books() {
             <table className="generaltable">
               <thead>
                 <tr>
-                  <th>Isbn</th>
-                  <th>Title</th>
-                  <th>Category</th>
-                  {/* <th>Description</th> */}
-                  <th>Publishing House</th>
-                  <th>Book Image</th>
-                  <th>Status</th>
-                  <th>Stock</th>
-                  <th>Discount</th>
-                  <th>Price</th>
-                  <th>Final Price</th>
+                  <th>name</th>
+                  <th>status</th>
+                  <th>Amount</th>
                   <th>Delete</th>
                   <th>Update</th>
                 </tr>
               </thead>
               <tbody>
-                {records.map((book) => (
-                  <tr key={book._id}>
-                    <td>{book.isbn}</td>
-                    <td>{book.title}</td>
-                    <td>{book.categoryName}</td>
-                    {/* <td>{book.description}</td> */}
-                    <td>{book.publishingHouse}</td>
-                    <td>
-                      <img
-                        src={book.mainImage?.secure_url}
-                        style={{
-                          borderRadius: "50%",
-                          width: "fit-content",
-                          height: "5em",
-                        }}
-                        alt="Book image"
-                      />
-                    </td>
-                    <td>{book.status}</td>
-                    <td>{book.stock}</td>
-                    <td>{book.Discount}</td>
-                    <td>{book.price}</td>
-                    <td>{book.finalPrice}</td>
+                {records.map((coupon) => (
+                  <tr key={coupon._id}>
+                    <td>{coupon.name}</td>
+                    <td>{coupon.status}</td>
+                    <td>{coupon.Amount}</td>
                     <td>
                       <Link
                         className="d-flex justify-content-center"
-                        to={`/delete/${book.id}`}
+                        to={`/deleteCoupon/${coupon._id}`}
                       >
                         <img src={Delete} alt="Delete" width={"45px"} />
                       </Link>
                     </td>
                     <td>
                       <Link
-                        to={`/Update/${book.id}`}
+                        to={`/UpdateCoupon/${coupon._id}`}
                         className="d-flex justify-content-center"
                       >
                         <img src={Update} alt="Update" width={"30px"} />
@@ -140,7 +115,12 @@ function Books() {
               </tbody>
             </table>
 
-            <nav className="pagination-style"
+            <nav
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
               <ul className="pagination">
                 <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
@@ -188,4 +168,4 @@ function Books() {
   }
 }
 
-export default Books;
+export default Coupon;

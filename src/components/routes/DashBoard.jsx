@@ -8,6 +8,7 @@ import { FaTruck, FaUsers } from 'react-icons/fa';
 import logo from "../../assets/Logo.png";
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenC, setIsOpenC] = useState(false);
     const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -75,6 +76,27 @@ const Dashboard = () => {
 
                                         <Link to="/addCategory" activeclassname="active">
                                             Add Category
+                                        </Link>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button type="button " className='p-0' onClick={() => setIsOpenC(!isOpenC)}
+                                aria-expanded={isOpenC ? "true" : "false"}>
+
+                                <PiBooks className='DashIcon' />
+                                <span><a href="">Coupon</a> </span>
+                                
+                                {isOpenC ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
+                            </button>
+                            <div className={`collapse ${isOpenC ? 'show' : ''}`} id="booksDropdown">
+                                <ul className="flex-column">
+                                        <Link to="/coupons" activeclassname="active">
+                                        Coupons
+                                        </Link>
+
+                                        <Link to="/addcoupon" activeclassname="active">
+                                            Add Coupon
                                         </Link>
                                 </ul>
                             </div>

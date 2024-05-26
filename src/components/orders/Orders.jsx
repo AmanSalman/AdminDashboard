@@ -22,7 +22,7 @@
 // // 			});
 // // 			console.log(response.data)
 // // 			setOrders(response.data.orders);
-// // 			setLoading(false); 
+// // 			setLoading(false);
 // // 		} catch (error) {
 // // 			setError(error.message);
 // // 			setLoading(false);
@@ -152,156 +152,243 @@
 // // }
 
 // // export default Orders;
-// import React, { useContext, useState } from 'react';
-// import axios from 'axios';
-// import '../CSSFiles/general.css';
-// import { Link } from 'react-router-dom';
-// import Loader from '../Loader/Loader.jsx';
-// import Accept from '../../assets/accept (2).png';
-// import Reject from '../../assets/cross-button.png';
-// import { toast } from 'react-toastify';
-// import { useQuery } from 'react-query';
-// import { UserContext } from '../context/User.jsx';
-// import { OrderContext } from '../context/OrderContext.jsx';
+import React, {useContext, useEffect, useState} from 'react';
+import axios from 'axios';
+import '../CSSFiles/general.css';
+import {Link} from 'react-router-dom';
+import Loader from '../Loader/Loader.jsx';
+import Accept from '../../assets/accept (2).png';
+import Reject from '../../assets/cross-button.png';
+import {toast} from 'react-toastify';
+import {useQuery} from 'react-query';
+import {UserContext} from '../context/User.jsx';
+import Error from '../shared/Error.jsx';
+import {TbArrowBigLeftLineFilled} from 'react-icons/tb';
 
-// function Orders() {
-//     const { orders, error, setError } = useContext(OrderContext);
-//     const [isLoading, setIsLoading] = useState(false);
-//     let {token,setToken} = useContext(UserContext);
-
-//     //pagination
-//     const [currentPage, setCurrentPage] = useState(1);
-//     const recordsPerPage = 6;
-//     const LastIndex = currentPage * recordsPerPage;
-//     const firstIndex = LastIndex - recordsPerPage;
-//     const orderedOrders = [...orders].sort((a, b) => {
-//         if (a.status === 'Pending') return -1;
-//         if (a.status === 'Accepted' && b.status !== 'Pending') return -1;
-//         if (a.status === 'Rejected' && b.status !== 'Pending' && b.status !== 'Accepted') return -1;
-//         return 1;
-//     });
-//     const records = orderedOrders.slice(firstIndex, LastIndex);
-//     const npage = Math.ceil(orderedOrders.length / recordsPerPage);
-//     const numbers = [...Array(npage + 1).keys()].slice(1);
-
-//     const filteredOrders = (status) => {
-//         return records?.filter(order => order.status === status);
-//     }
-
-//     if (!orders.length) {
-//         return <Loader />; // Display loader if orders are being fetched
-//     }
-
-//     return (
-//         <div className='cssFix table-container' style={{ background: 'white', borderRadius: '18px' }} >
-//             <h2 className='text-uppercase heading'>Orders :</h2>
-
-//             {
-//                 error && <p>Error: {error}</p>
-//             }
-
-//             {
-//                 !isLoading && !error && (
-//                     <>
-//                         <table className='generaltable'>
-//                             <thead>
-//                                 <tr>
-//                                     <th>ID</th>
-//                                     <th>Location</th>
-//                                     <th>Total Price</th>
-//                                     <th>Status</th>
-//                                     <th>Actions</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>
-//                                 {filteredOrders('Pending').map((order) => (
-//                                     <tr key={order._id}>
-//                                         <td>{order._id}</td>
-//                                         <td>{order.location}</td>
-//                                         <td>{order.totalPrice}</td>
-//                                         <td style={{ color: 'orange', fontWeight: '600' }}>{order.status}</td>
-//                                         <td>
-//                                             <Link className='d-flex justify-content-center text-decoration-none' style={{ marginBottom: '.5em' }} to={`/acceptOrder/${order._id}`}>
-//                                                 <span style={{marginRight:'.5em',color:'green'}}>Accept</span>
-//                                                 <img src={Accept} alt='Accept' width={""} />
-//                                             </Link>
-//                                             <Link className='d-flex justify-content-center text-decoration-none' to={`/rejectOrder/${order._id}`}>
-//                                                 <span style={{marginRight:'.5em',color:'red'}}>Reject</span>
-//                                                 <img src={Reject} alt='Reject' width={""} />
-//                                             </Link>
-//                                         </td>
-//                                     </tr>
-//                                 ))}
-//                                 {filteredOrders('Accepted').map((order) => (
-//                                     <tr key={order._id}>
-//                                         <td>{order._id}</td>
-//                                         <td>{order.location}</td>
-//                                         <td>{order.totalPrice}</td>
-//                                         <td style={{ color: 'green', fontWeight: '600' }}>{order.status}</td>
-//                                         <td></td>
-//                                     </tr>
-//                                 ))}
-//                                 {filteredOrders('Rejected').map((order) => (
-//                                     <tr key={order._id}>
-//                                         <td>{order._id}</td>
-//                                         <td>{order.location}</td>
-//                                         <td>{order.totalPrice}</td>
-//                                         <td style={{ color: 'red', fontWeight: '600' }}>{order.status}</td>
-//                                         <td></td>
-//                                     </tr>
-//                                 ))}
-//                             </tbody>
-//                         </table>
-//                         <nav style={{display:'flex', justifyContent:'center' ,alignItems:'center'}}>
-//                             <ul className='pagination'>
-//                                 <li className='page-item'>
-//                                     <a href='#' className='page-link' onClick={prePage}> Prev</a>
-//                                 </li>
-//                                 {
-//                                     numbers.map((n, i) => (
-//                                         <li className={`'page-item' ${currentPage === n ? 'active page-item bgPrimary' : 'page-item'}`} key={i}>
-//                                             <a href='#' className='page-link' onClick={() => changeCPage(n)}>{n}</a>
-//                                         </li>
-//                                     ))
-//                                 }
-
-//                                 <li className='page-item'>
-//                                     <a href='#' className='page-link' onClick={nextPage}> Next</a>
-//                                 </li>
-//                             </ul>
-//                         </nav>
-//                     </>
-//                 )
-//             }
-//         </div>
-//     );
-
-//     function prePage() {
-//         if (currentPage !== 1) {
-//             setCurrentPage(currentPage - 1);
-//         }
-//     }
-
-//     function changeCPage(id) {
-//         setCurrentPage(id);
-//     }
-
-//     function nextPage() {
-//         if (currentPage !== npage) {
-//             setCurrentPage(currentPage + 1);
-//         }
-//     }
-// }
-
-// export default Orders;
-
-
-import React from 'react'
 
 function Orders() {
-  return (
-    <div>Orders</div>
-  )
+	const [isLoading, setIsLoading] = useState(false);
+	const [orders, setOrders] = useState([]);
+	const [error, setError] = useState(null);
+	const {token} = useContext(UserContext);
+
+	const fetchOrders = async () => {
+		try {
+			setIsLoading(true);
+			const {data} = await axios.get(`${
+				import.meta.env.VITE_API_URL2
+			}/order/pending`, {
+				headers: {
+					Authorization: `AmanGRAD__${token}`
+				}
+			});
+			setOrders(data.pending);
+			setIsLoading(false);
+		} catch (error) {
+			const {response} = error;
+			setError(res)
+			if (response) {
+				setError(response.data.message);
+			} else {
+				setError(error.message);
+			}
+			setIsLoading(false);
+		}
+	}
+
+	useEffect(() => {
+		fetchOrders();
+	}, [])
+	// pagination
+	const [currentPage, setCurrentPage] = useState(1);
+	const recordsPerPage = 4;
+	const LastIndex = currentPage * recordsPerPage;
+	const firstIndex = LastIndex - recordsPerPage;
+	const records = orders.slice(firstIndex, LastIndex);
+	const npage = Math.ceil(orders.length / recordsPerPage);
+	const numbers = [...Array(npage + 1).keys()].slice(1);
+
+	if (!orders.length) {
+		return <Loader/>;
+	}
+
+	return (
+		<>
+			<nav aria-label="breadcrumb">
+				<ol className="breadcrumb">
+					<li className="breadcrumb-item active" aria-current="page">
+						Pages
+					</li>
+					<li className="breadcrumb-item active" aria-current="page">
+						Orders
+					</li>
+				</ol>
+			</nav>
+			<div className='table-container container'>
+
+
+				<Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
+				{
+				error != null ? (
+					<Error message={error}/>
+				) : (
+					<>
+						<table className='generaltable'>
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Location</th>
+									<th>Total Price</th>
+									<th>Phone</th>
+									<th>Status</th>
+									<th>Accept</th>
+									<th>Reject</th>
+									<th>order details</th>
+								</tr>
+							</thead>
+							<tbody> {
+								records.map((order) => (
+									<tr key={
+										order._id
+									}>
+										<td>{
+											order._id
+										}</td>
+										<td>{
+											order.Address
+										}</td>
+										<td>{
+											order.finalPrice
+										}</td>
+										<td>{
+											order.phone
+										}</td>
+										<td style={
+											{
+												color: 'orange',
+												fontWeight: '600'
+											}
+										}>
+											{
+											order.status
+										}</td>
+										<td>
+											<Link className='d-flex justify-content-center text-decoration-none'
+												to={
+													`/acceptOrder/${
+														order._id
+													}`
+											}>
+												{/* <span style={{marginRight:'.5em',color:'green'}}>Accept</span> */}
+												<img src={Accept}
+													alt='Accept'
+													width={""}/>
+											</Link>
+										</td>
+										<td>
+											<Link className='d-flex justify-content-center text-decoration-none'
+												to={
+													`/rejectOrder/${
+														order._id
+													}`
+											}>
+												{/* <span style={{marginRight:'.5em',color:'red'}}>Reject</span> */}
+												<img src={Reject}
+													alt='Reject'
+													width={""}/>
+											</Link>
+										</td>
+										<td>
+											<Link>
+												Show Books
+											</Link>
+										</td>
+									</tr>
+								))
+							}
+								{/* {filteredOrders('Accepted').map((order) => (
+                                    <tr key={order._id}>
+                                        <td>{order._id}</td>
+                                        <td>{order.location}</td>
+                                        <td>{order.totalPrice}</td>
+                                        <td style={{ color: 'green', fontWeight: '600' }}>{order.status}</td>
+                                        <td></td>
+                                    </tr>
+                                ))} */}
+
+								{/* {filteredOrders('Rejected').map((order) => (
+                                    <tr key={order._id}>
+                                        <td>{order._id}</td>
+                                        <td>{order.location}</td>
+                                        <td>{order.totalPrice}</td>
+                                        <td style={{ color: 'red', fontWeight: '600' }}>{order.status}</td>
+                                        <td></td>
+                                    </tr>
+                                ))} */} </tbody>
+						</table>
+
+
+						<nav className='pagination-style'>
+							<ul className='pagination'>
+								<li className='page-item'>
+									<a href='#' className='page-link'
+										onClick={prePage}>
+										Prev</a>
+								</li>
+								{
+								numbers.map((n, i) => (
+									<li className={
+											`'page-item' ${
+												currentPage === n ? 'active page-item bgPrimary' : 'page-item'
+											}`
+										}
+										key={i}>
+										<a href='#' className='page-link'
+											onClick={
+												() => changeCPage(n)
+										}>
+											{n}</a>
+									</li>
+								))
+							}
+
+								<li className='page-item'>
+									<a href='#' className='page-link'
+										onClick={nextPage}>
+										Next</a>
+								</li>
+							</ul>
+						</nav>
+					</>
+				)
+			} </div>
+		</>
+	);
+
+	function prePage() {
+		if (currentPage !== 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	}
+
+	function changeCPage(id) {
+		setCurrentPage(id);
+	}
+
+	function nextPage() {
+		if (currentPage !== npage) {
+			setCurrentPage(currentPage + 1);
+		}
+	}
 }
 
-export default Orders
+export default Orders;
+
+
+// import React from 'react'
+// function Orders() {
+// return (
+//     <div>Orders</div>
+// )
+// }
+// export default Orders

@@ -15,7 +15,9 @@ body{
 	border-radius: 10px;
 	flex-grow: 1;
 	width: 100%;
+  background-color: white;
   }
+  
   
   /* Styles for the input */
   input, select, textarea {
@@ -114,6 +116,12 @@ body{
 
 .pagination {
 	flex-direction: row;
+}
+
+.pagination-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*============ Fix the file Input appearance ============*/

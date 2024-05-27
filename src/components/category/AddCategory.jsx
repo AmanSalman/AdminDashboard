@@ -6,7 +6,9 @@ import Input from '../shared/Input.jsx';
 import { toast } from 'react-toastify';
 import { categorySchema } from '../../validation/CategoryValidation.js'
 import { UserContext } from '../context/User.jsx';
-
+import { Link } from 'react-router-dom';
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
+import '../books/book.css'
 function AddCategory() {
     const [loading, setLoading] = useState(false);
     const {token} = useContext(UserContext);
@@ -99,9 +101,10 @@ function AddCategory() {
           </li>
         </ol>
       </nav>
-        <div className='w-100 border' style={{ background: 'white', borderRadius: '18px' }}>
+        <div className='component-container d-flex flex-column bookadd border'>
+        <Link to={'/'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
             {loading ? (<Loader />) :
-                    <form onSubmit={formik.handleSubmit} encType='multipart/form-data' className='container'>
+                    <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
                         {renderInputs}
                         <button type="submit" className='button' disabled={!formik.isValid}>Add Category</button>
                     </form>

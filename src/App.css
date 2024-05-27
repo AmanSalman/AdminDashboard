@@ -11,7 +11,7 @@ body{
 .container {
 	display: flex;
 	flex-direction: column;
-	padding: 20px;
+	padding: 2rem;
 	border-radius: 10px;
 	flex-grow: 1;
 	width: 100%;
@@ -52,7 +52,7 @@ body{
 	color: white !important;
 	font-weight: 400;
 	width: fit-content !important;
-	padding: 10px 15px 10px 15px  !important;
+	padding: 15px 10px 10px 10px  !important;
 	margin-left: 5px !important;
   transition: all .3s;
   text-decoration: none !important;
@@ -84,8 +84,7 @@ body{
   }
   
   .generaltable tbody tr:hover {
-    background-color:rgb(155, 204, 222);
-    color: var(--main-color-white);
+    background-color:rgb(243, 246, 247);
   }
 
   .table-container {
@@ -156,6 +155,19 @@ input[type="file" i]  {
     border-radius: 18px;
 	padding: 2rem;
 	margin-top: 1.5rem;
+  
+}
+
+.container-cards {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.container-cards .card {
+  width: 18rem;
 }
 
 
@@ -172,6 +184,21 @@ input[type="file" i]  {
 
 .arrowback-pages {
   font-size: 2rem;
-  margin-bottom: 1rem;
+}
 
+.container .arrow, .component-container .arrow {
+  width: fit-content;
+  border: 1px solid #d1d1d1;
+  border-radius: 50%;
+  padding: 3px;
+  margin-bottom: 1rem;
+}
+
+
+/* Order */
+
+.arrow-button {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
 }

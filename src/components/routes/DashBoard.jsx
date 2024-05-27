@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Dashboard.css';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { PiBooks } from 'react-icons/pi';
@@ -6,13 +6,49 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { BiCategory } from 'react-icons/bi';
 import { FaTruck, FaUsers } from 'react-icons/fa';
 import logo from "../../assets/Logo.png";
+import Loader from '../Loader/Loader';
+import { UserContext } from '../context/User';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenC, setIsOpenC] = useState(false);
+    const [isOpenOrder, setIsOpenOrder] = useState(false);
     const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
+    const [isLoading, setIsLoading] = useState(false);
+    const [orders, setOrders] = useState([]);
+    const { token } = useContext(UserContext);
+  
+    const fetchOrders = async () => {
+        try {
+            setIsLoading(true);
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/order/orders`, {
+                headers: {
+                    Authorization: `AmanGRAD__${token}`
+                }
+            });
+            let pending = data.orders.filter(order => order.status === 'pending')
+            console.log(data)
+            setOrders(pending.length);
+            setIsLoading(false);
+        } catch (error) {
+            const { response } = error;
+            toast(response?.data.message || 'error while fetching orders')
+            setIsLoading(false);
+            console.error(error);
+        }
+    }
+  
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    if(isLoading){
+        return <Loader/>
+    }
 
     return (
         <div className="containercustom">
@@ -29,10 +65,37 @@ const Dashboard = () => {
                 <div className="Dashboardsec2">
                     <span className="DashTitle">PAGES</span>
                     <ul>
-                        <li>
+                        {/* <li>
                         <FaTruck className='DashIcon' />
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 99+</span>
                         <Link to={'/orders'}>Order</Link>
+                        </li> */}
+
+<li>
+                            <button type="button " className='p-0' onClick={() => setIsOpenOrder(!isOpenOrder)}
+                                aria-expanded={isOpenOrder ? "true" : "false"}>
+
+                                <PiBooks className='DashIcon' />
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {orders}</span>
+                                <span><a href="#">Orders</a> </span>
+                                
+                                {isOpenOrder ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
+                            </button>
+                            <div className={`collapse ${isOpenOrder ? 'show' : ''}`} id="booksDropdown">
+                                <ul className="flex-column">
+                                        <Link to="/orders" activeclassname="active">
+                                          Pending Orders
+                                        </Link>
+
+                                        <Link to="/accepted" activeclassname="active">
+                                            Accepted Orders
+                                        </Link>
+                                        
+                                        <Link to="/sendOrders" activeclassname="active">
+                                            Sent Orders
+                                        </Link>
+                                </ul>
+                            </div>
                         </li>
                         <li>
                             <FaUsers className="DashIcon"/>

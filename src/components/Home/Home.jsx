@@ -18,7 +18,7 @@ function Home() {
   const [orders, setOrders] = useState([]);
   const [users,setUsers] = useState(0);
   const [stocks,setStocks] = useState(0)
-	const [pendingCount, setPendingCount] = useState(0);
+	const [Count, setCount] = useState(0);
 	const [RejectedCount, setRejectedCount] = useState(0);
 	const [AcceptedCount, setAcceptedCount] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
@@ -92,9 +92,23 @@ function Home() {
     }
   };
   
+  const fetchOrders = async ()=>{
+    try {
+      const {data} = await axios.get(
+        `${import.meta.env.VITE_API_URL2}/order/count`,
+        { headers: { Authorization: `AmanGRAD__${token}` } }
+      );
+      console.log(data)
+      setAcceptedCount(data.acceptedOrders);
+      setCount(data.ordersCount);
+      setRejectedCount(data.rejectedOrders);
+    } catch (error) {
+      console.error(error)
+    }
+  }
   
 	useEffect(() => {
-		// fetchOrders();
+		fetchOrders();
     fetchBooks();
     fetchUsers();
 	}, []); 
@@ -107,7 +121,7 @@ function Home() {
     datasets: [
       {
         label: '# of Orders',
-        data: [AcceptedCount || 20, RejectedCount || 12],
+        data: [AcceptedCount || 0, RejectedCount || 0],
         backgroundColor: ['rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)'],
         borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
         borderWidth: 1.5,
@@ -137,7 +151,7 @@ function Home() {
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <div className='stats__holder'>
         <StatsCard title="Today's Users" number={users} change={<FaUsers />} color={'#00b1eb'}/>
-      <StatsCard title="Orders" number={150} change={<IoBagCheck />} color={'#ed157f'} />
+      <StatsCard title="Orders" number={Count} change={<IoBagCheck />} color={'#ed157f'} />
       <StatsCard title="Stock" number={stocks}  change={<BsBoxes />} color={'#f5af2c'} />
       {/* <StatsCard title="Active Sessions" number={150} />     */}
         </div>

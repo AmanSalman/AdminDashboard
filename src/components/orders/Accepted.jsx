@@ -10,8 +10,8 @@ import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 
-function Orders() {
-    const [isLoading, setIsLoading] = useState(false);
+export default function Accepted() {
+  const [isLoading, setIsLoading] = useState(false);
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
     const { token } = useContext(UserContext);
@@ -19,18 +19,17 @@ function Orders() {
     const fetchOrders = async () => {
         try {
             setIsLoading(true);
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/order/pending`, {
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/order/accept`, {
                 headers: {
                     Authorization: `AmanGRAD__${token}`
                 }
             });
-            setOrders(data.pending);
+            console.log(data)
+            setOrders(data.accepted);
             setIsLoading(false);
         } catch (error) {
             const { response } = error;
-            setError(response?.error?.message || 'error while loading the orders')
-            setIsLoading(false);
-        }finally {
+            setError(response?.data.message || 'error while fetching orders')
             setIsLoading(false);
         }
     }
@@ -61,9 +60,11 @@ function Orders() {
                 </ol>
             </nav>
             <div className='table-container container'>
+							<div className='arrow-button'>
                 <Link to={'/'} className='arrow'>
                     <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
                 </Link>
+							</div>
                 {error ? (
                     <Error message={error} />
                 ) : (
@@ -84,14 +85,14 @@ function Orders() {
                             <tbody>
                                 {records.map((order,index) => (
                                     <tr key={order._id}>
-                                        <td>{firstIndex + index + 1}</td>
+                                        <td>{firstIndex + index +1}</td>
                                         <td>{order.Address}</td>
                                         <td>{order.finalPrice}</td>
                                         <td>{order.phone}</td>
-                                        <td style={{ color: 'orange', fontWeight: '600' }}>{order.status}</td>
+                                        <td className='text-success fw-medium'>{order.status}</td>
                                         <td>
-                                            <Link className='d-flex justify-content-center text-decoration-none' to={`/acceptOrder/${order._id}`}>
-                                                <img src={Accept} alt='Accept' width={"32px"} />
+                                            <Link className='d-flex justify-content-center text-decoration-none btn btn-warning' to={`/delivered/${order._id}`}>
+                                            delivered 
                                             </Link>
                                         </td>
                                         <td>
@@ -146,5 +147,3 @@ function Orders() {
         }
     }
 }
-
-export default Orders;

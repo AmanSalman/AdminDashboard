@@ -72,7 +72,7 @@ function Books() {
       <div
         className="table-container border container"
       >
-        <Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
+        <Link to={'/'} className="arrow"><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
         {error != null ? (
           <Error message={error} />
         ) : (

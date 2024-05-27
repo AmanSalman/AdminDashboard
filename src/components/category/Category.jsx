@@ -6,6 +6,7 @@ import Delete from '../../assets/decline.png';
 import Update from '../../assets/pen.png'
 import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 
 function Category() {
   const [Categories, setCategories] = useState([]);
@@ -58,10 +59,8 @@ function Category() {
       </li>
     </ol>
   </nav>
-    <div className='cssFix table-container border' style={{
-      background: 'white',
-      borderRadius: '18px'
-    }}>
+    <div className='table-container border container'>
+    <Link to={'/'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
       {error != null? <Error/>: <>
       
       <table className="generaltable">

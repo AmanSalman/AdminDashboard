@@ -70,10 +70,8 @@ function Coupon() {
       </nav>
 
       <div
-        className="table-container border"
-        style={{ background: "white", borderRadius: "18px", padding: "1rem" }}
-      >
-        <Link to={'/'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
+        className="table-container border container">
+        <Link to={'/'} className="arrow"><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
         {error != null ? (
           <Error message={error} />
         ) : (

@@ -35,8 +35,12 @@ import Coupon from './components/coupon/Coupon.jsx';
 import DeleteCoupon from './components/coupon/DeleteCoupon.jsx';
 import UpdateCoupon from './components/coupon/UpdateCoupon.jsx';
 import CreateCoupon from './components/coupon/CreateCoupon.jsx';
+import Accepted from './components/orders/Accepted.jsx';
+import OnwayOrder from './components/orders/OnwayOrder.jsx';
+import OrderDetails from './components/orders/OrderDetails';
+import SentOrders from './components/orders/SentOrders.jsx';
 
-
+ 
 
 export default function App() {
 
@@ -79,6 +83,22 @@ const router = createBrowserRouter([
       {
         path:'/orders',
         element:<Orders/>
+      },
+      {
+        path:'/orderDetails/:id',
+        element:<OrderDetails/>
+      },
+      {
+        path:'/accepted',
+        element:<Accepted/>
+      },
+      {
+        path:'/sendOrders',
+        element:<SentOrders/>
+      },
+      {
+        path:'/delivered/:id',
+        element:<OnwayOrder/>
       },
       {
         path:'/acceptOrder/:orderId',

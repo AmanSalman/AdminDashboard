@@ -275,10 +275,12 @@ const UpdateBook = () => {
             setValue('stock', book.stock);
             setValue('status', book.status);
             setMainImageUrl(book.mainImage.secure_url);
+            setLoading(false)
         } catch (error) {
             const { response } = error;
             toast.error(response?.data?.message || 'Failed to fetch book');
             console.error(error);
+            setLoading(false)
         } finally {
             setLoading(false);
         }
@@ -286,16 +288,21 @@ const UpdateBook = () => {
 
     const fetchCategories = async () => {
         try {
+            setLoading(true)
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/category`, {
                 headers: {
                     Authorization: `AmanGRAD__${token}`
                 }
             });
             setCategories(data.Categories);
+            setLoading(false)
         } catch (error) {
             const { response } = error;
             toast.error(response?.data?.message || 'Failed to fetch categories');
             console.error(error);
+            setLoading(false)
+        }finally {
+            setLoading(false)
         }
     };
 

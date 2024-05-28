@@ -1,20 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../Loader/Loader";
 import { UserContext } from "../context/User";
 import axios from "axios";
 
-function OnwayOrder() {
+function DeliveredOrder() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useContext(UserContext);
   const navigate = useNavigate()
-  const onway = async ()=>{
+  const location = useLocation();
+  const delivered = async ()=>{
     try {
       setIsLoading(true);
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_URL2}/order/onway/${id}`,
+        `${import.meta.env.VITE_API_URL2}/order/delivered/${id}`,
         {},
         {
           headers: { Authorization: `AmanGRAD__${token}` },
@@ -22,7 +23,7 @@ function OnwayOrder() {
       );
       console.log(data)
       if(data.message == 'success'){
-        toast.success('on way successfully');
+        toast.success('order delivered successfully');
       }
       setIsLoading(false);
     } catch (error) {
@@ -33,11 +34,11 @@ function OnwayOrder() {
     }finally {
       setIsLoading(false);
     }
-    navigate('/accepted');
+    navigate(location.state?.from || '/orders'); 
   }
 
   useEffect(()=>{
-    onway();
+    delivered();
   },[])
 
   if(isLoading){
@@ -47,4 +48,4 @@ function OnwayOrder() {
   return <></>
 }
 
-export default OnwayOrder;
+export default DeliveredOrder;

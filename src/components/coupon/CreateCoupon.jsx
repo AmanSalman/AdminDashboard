@@ -56,7 +56,7 @@ const CreateCoupon = () => {
         </li>
       </ol>
       <div className="component-container d-flex flex-column bookadd">
-        <Link to={'/'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' /></Link>
+        <Link to={'/coupons'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' /></Link>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div>
             <label htmlFor="name">Name:</label>

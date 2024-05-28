@@ -1,51 +1,47 @@
-// import React, { useContext, useEffect, useState } from 'react'
-// import { useNavigate, useParams } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import Loader from '../Loader/Loader.jsx';
-// import axios from 'axios';
-// import { UserContext } from '../context/User.jsx';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loader from '../Loader/Loader.jsx';
+import axios from 'axios';
+import { UserContext } from '../context/User.jsx';
 
-// function RejectOrder() {
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
-//     const navigate = useNavigate();
-//     const {orderId} = useParams();
-//     const {user} = useContext(UserContext);
-//     const RejectOrder = async () => {
-//         try {
-//             setLoading(true);
-//             const {data} = await axios.put(`${import.meta.env.VITE_API_URL}/order/rejectOrder/${orderId}`,{}, {headers:{Authorization: `${user}`,}});
-//             if (data.message == 'success') {
-//                 toast.success("Rejected successfully");
-//             } else if (data.message == "can't reject the order") {
-//                 toast.warn(data.message);
-//             }
-//             setLoading(false);
-//         } catch (error) {
-//             setError(error.message);
-//             setLoading(false);
-//         }
-//         navigate('/orders')
-//     }
+function RejectOrder() {
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const { orderId } = useParams();
+    const { token } = useContext(UserContext);
+    const location = useLocation();
 
-//     useEffect(() => {
-//         RejectOrder();
-//       }, []); 
+    const rejectOrder = async () => {
+        try {
+            setLoading(true);
+            const { data } = await axios.patch(
+                `${import.meta.env.VITE_API_URL2}/order/reject/${orderId}`,
+                {},
+                { headers: { Authorization: `AmanGRAD__${token}` } }
+            );
+            if (data.message === 'success') {
+                toast.success('Order rejected successfully');
+            }
+            console.log(data);
+        } catch (error) {
+            const { response } = error;
+            toast.error(response?.data?.message || 'Failed to reject order');
+        } finally {
+            setLoading(false);
+            navigate(location.state?.from || '/orders');  // Navigate back to the previous path or default to '/orders'
+        }
+    };
 
-//     if (loading) {
-//         return <Loader />;
-//       }
+    useEffect(() => {
+        rejectOrder();
+    }, []);
 
-//   return <></>
+    if (loading) {
+        return <Loader />;
+    }
 
-// }
-
-// export default RejectOrder
-
-import React from 'react'
-
-export default function RejectOrder() {
-  return (
-    <div>RejectOrder</div>
-  )
+    return <></>;
 }
+
+export default RejectOrder;

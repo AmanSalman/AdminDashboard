@@ -134,10 +134,13 @@ function Home() {
     <div className="position-relative h-100">
       <div className="headerContent">
 
+<div className='Home'>
+
     <div className="dropdown">
   <Link to={'/profile'}>
     <BiUser className='profile-Icon ' />
   </Link>
+</div>
 </div>
 
 		<nav aria-label="breadcrumb">

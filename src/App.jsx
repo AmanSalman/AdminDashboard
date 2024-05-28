@@ -39,6 +39,7 @@ import Accepted from './components/orders/Accepted.jsx';
 import OnwayOrder from './components/orders/OnwayOrder.jsx';
 import OrderDetails from './components/orders/OrderDetails';
 import SentOrders from './components/orders/SentOrders.jsx';
+import DeliveredOrder from './components/orders/DeliveredOrder.jsx';
 
  
 
@@ -97,8 +98,12 @@ const router = createBrowserRouter([
         element:<SentOrders/>
       },
       {
-        path:'/delivered/:id',
+        path:'/onway/:id',
         element:<OnwayOrder/>
+      },
+      {
+        path:'/delivered/:id',
+        element:<DeliveredOrder/>
       },
       {
         path:'/acceptOrder/:orderId',

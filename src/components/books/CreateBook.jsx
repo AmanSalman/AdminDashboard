@@ -87,7 +87,7 @@ const CreateBook = () => {
         </li>
       </ol>
       <div className="component-container d-flex flex-column bookadd">
-        <Link to={'/'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' /></Link>
+        <Link to={'/books'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' /></Link>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div>
             <label htmlFor="isbn">ISBN:</label>

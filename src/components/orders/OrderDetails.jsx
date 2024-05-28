@@ -59,7 +59,7 @@ function OrderDetails() {
       {
         order.map((book)=>
 
-   <div className="card">
+   <div className="card" key={book._id}>
   <img src={book?.mainImage?.secure_url} className="card-img-top" alt="book image" />
   <div className="card-body">
     <h5 className="card-title">{book.title}</h5>

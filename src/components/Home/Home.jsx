@@ -106,6 +106,11 @@ function Home() {
       console.error(error)
     }
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+        window.location.reload();
+  };
   
 	useEffect(() => {
 		fetchOrders();
@@ -136,11 +141,15 @@ function Home() {
 
 <div className='Home'>
 
-    <div className="dropdown">
-  <Link to={'/profile'}>
-    <BiUser className='profile-Icon ' />
-  </Link>
-</div>
+<div className="dropdown">
+      <Link to={'/profile'}>
+        <BiUser className='profile-icon' />
+      </Link>
+      <div className="dropdown-content">
+        <Link to="/profile">Profile</Link>
+        <button onClick={handleLogout}>Log Out</button>
+      </div>
+    </div>
 </div>
 
 		<nav aria-label="breadcrumb">

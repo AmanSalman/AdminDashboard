@@ -202,3 +202,9 @@ input[type="file" i]  {
   justify-content: space-between;
   margin-bottom: .5rem;
 }
+
+.confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

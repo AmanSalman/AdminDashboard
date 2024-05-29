@@ -16,8 +16,8 @@ function RejectOrder() {
         try {
             setLoading(true);
             const { data } = await axios.patch(
-                `${import.meta.env.VITE_API_URL2}/order/reject/${orderId}`,
-                {},
+                `${import.meta.env.VITE_API_URL2}/order/${orderId}`,
+                {status:'rejected'},
                 { headers: { Authorization: `AmanGRAD__${token}` } }
             );
             if (data.message === 'success') {

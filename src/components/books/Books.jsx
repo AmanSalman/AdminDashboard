@@ -199,12 +199,16 @@ import { UserContext } from "../context/User.jsx";
 import Error from "./../shared/Error";
 import { TbArrowBigLeftLineFilled } from "react-icons/tb";
 import './book.css'
+import ConfirmationModal from "../shared/ConfirmationModal.jsx";
 function Books() {
   const [error, setError] = useState(null);
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState(() => () => {});
 
   const [searchCriteria, setSearchCriteria] = useState('title');
   const [searchTerm, setSearchTerm] = useState('');
@@ -239,6 +243,28 @@ function Books() {
   useEffect(() => {
     fetchBooks();
   }, []);
+
+  const openModal = (message, action) => {
+    setModalMessage(message);
+    setModalAction(() => action);
+    setModalIsOpen(true);
+};
+
+const closeModal = () => {
+    setModalIsOpen(false);
+};
+
+const handleConfirm = () => {
+    modalAction();
+    closeModal();
+};
+
+const handledelete= (bookId) => {
+    openModal('Are you sure you want to delete the book? This action cannot be undone.', () => {
+        navigate(`/delete/${bookId}`);
+    });
+};
+
 
   const filteredBooks = books.filter(book =>
     book[searchCriteria]?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -339,12 +365,12 @@ function Books() {
                     <td>{book.price}</td>
                     <td>{book.finalPrice}</td>
                     <td>
-                      <Link
+                      <button
                         className="d-flex justify-content-center"
-                        to={`/delete/${book.id}`}
+                        onClick={()=>handledelete(book.id)}
                       >
                         <img src={Delete} alt="Delete" width={"45px"} />
-                      </Link>
+                      </button>
                     </td>
                     <td>
                       <Link
@@ -386,6 +412,12 @@ function Books() {
           </>
         )}
       </div>
+      <ConfirmationModal
+                isOpen={modalIsOpen}
+                message={modalMessage}
+                onConfirm={handleConfirm}
+                onClose={closeModal}
+            />
     </>
   );
 

@@ -14,8 +14,8 @@ function OnwayOrder() {
     try {
       setIsLoading(true);
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_URL2}/order/onway/${id}`,
-        {},
+        `${import.meta.env.VITE_API_URL2}/order/${id}`,
+        {status:'onway'},
         {
           headers: { Authorization: `AmanGRAD__${token}` },
         }

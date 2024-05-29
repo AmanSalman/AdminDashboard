@@ -162,7 +162,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Accept from '../../assets/accept (2).png';
 import Reject from '../../assets/decline.png';
 import { UserContext } from '../context/User.jsx';
@@ -170,6 +170,7 @@ import Loader from '../Loader/Loader.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import './User.css'; // Import the CSS file
+import ConfirmationModal from '../shared/ConfirmationModal.jsx';
 
 function User() {
   const [error, setError] = useState(null);
@@ -178,6 +179,11 @@ function User() {
   const { token } = useContext(UserContext);
   const [searchCriteria, setSearchCriteria] = useState('username');
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState(() => () => {});
+
 
   const fetchUsers = async () => {
     try {
@@ -205,6 +211,28 @@ function User() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+
+  const openModal = (message, action) => {
+    setModalMessage(message);
+    setModalAction(() => action);
+    setModalIsOpen(true);
+};
+
+const closeModal = () => {
+    setModalIsOpen(false);
+};
+
+const handleConfirm = () => {
+    modalAction();
+    closeModal();
+};
+
+const handledelete= (id) => {
+    openModal('Are you sure you want to disable the user? This action cannot be undone.', () => {
+        navigate(`/users/disable/${id}`);
+    });
+};
 
   const filteredUsers = users.filter(user =>
     user[searchCriteria]?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -260,6 +288,7 @@ function User() {
                   <th>Email</th>
                   <th>Disable</th>
                   <th>Activate</th>
+                  <th>Orders</th>
                 </tr>
               </thead>
               <tbody>
@@ -273,9 +302,9 @@ function User() {
                     <td>{user.email}</td>
                     <td>
                       {user.status !== 'Disabled' &&
-                        <Link className="d-flex justify-content-center" to={`/users/disable/${user._id}`}>
+                        <button className="d-flex justify-content-center" onClick={()=>handledelete(user._id)}>
                           <img src={Reject} alt="Reject" width="45px" />
-                        </Link>
+                        </button>
                       }
                     </td>
                     <td>
@@ -284,6 +313,11 @@ function User() {
                           <img src={Accept} alt="Activate" width="32px" />
                         </Link>
                       }
+                    </td>
+                    <td>
+                      <Link to={'/userOrders'} className='btn btn-outline-dark'>
+                        Show
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -307,6 +341,14 @@ function User() {
           </>
         }
       </div>
+
+
+      <ConfirmationModal
+                isOpen={modalIsOpen}
+                message={modalMessage}
+                onConfirm={handleConfirm}
+                onClose={closeModal}
+            />
     </>
   );
 

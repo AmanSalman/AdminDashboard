@@ -140,13 +140,14 @@
 // export default Category;
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader.jsx';
 import Delete from '../../assets/decline.png';
 import Update from '../../assets/pen.png'
 import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
+import ConfirmationModal from '../shared/ConfirmationModal.jsx';
 
 function Category() {
   const [categories, setCategories] = useState([]);
@@ -156,6 +157,11 @@ function Category() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState(() => () => {});
+  const navigate = useNavigate();
 
   const fetchCategories = async () => {
     try {
@@ -174,6 +180,28 @@ function Category() {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const openModal = (message, action) => {
+    setModalMessage(message);
+    setModalAction(() => action);
+    setModalIsOpen(true);
+};
+
+const closeModal = () => {
+    setModalIsOpen(false);
+};
+
+const handleConfirm = () => {
+    modalAction();
+    closeModal();
+};
+
+const handledelete= (id) => {
+    openModal('Are you sure you want to delete the category? This action cannot be undone.', () => {
+      console.log(id)
+        navigate(`/deleteCategory/${id}`);
+    });
+};
 
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -254,12 +282,11 @@ function Category() {
                       />
                     </td>
                     <td>
-                      <Link
+                      <button onClick={()=>handledelete(category._id)}
                         className='d-flex justify-content-center'
-                        to={`/deleteCategory/${category._id}`}
                       >
                         <img src={Delete} alt='Delete' width={"45px"} />
-                      </Link>
+                      </button>
                     </td>
                     <td>
                       <Link
@@ -292,6 +319,12 @@ function Category() {
           </>
         )}
       </div>
+      <ConfirmationModal
+                isOpen={modalIsOpen}
+                message={modalMessage}
+                onConfirm={handleConfirm}
+                onClose={closeModal}
+            />
     </>
   );
 }

@@ -5,9 +5,10 @@ import axios from 'axios';
 import Loader from '../Loader/Loader.jsx';
 import { toast } from 'react-toastify';
 import Input from '../shared/Input.jsx';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { updateCategorySchema } from '../../validation/CategoryValidation.js';
 import { UserContext } from '../context/User.jsx';
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 
 const UpdateCategory = () => {
     const [loading, setLoading] = useState(false);
@@ -179,19 +180,32 @@ const UpdateCategory = () => {
     }, []);
 
     return (
-        <div className='cssFix w-100' style={{ background: 'white', borderRadius: '18px' }}>
-            {loading ? (
-                <Loader />
-            ) : (
-                <>
-                    <h2 className='text-uppercase heading'>Update Category :</h2>
+
+        <>
+           <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item active" aria-current="page">
+            Pages
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Categories
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Update Category
+          </li>
+        </ol>
+      </nav>
+        <div className='border container' >
+      <Link to={'/'} className="arrow">
+          <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/>
+        </Link>
                     <div className='d-flex align-items-center w-50'>
                         {imageUrl && (
                             <img
                                 src={imageUrl}
                                 alt='Category Image'
                                 style={{ borderRadius: '50%' }}
-                                className='img-fluid w-50'
+                                className='img-fluid w-25'
                             />
                         )}
                     </div>
@@ -201,9 +215,8 @@ const UpdateCategory = () => {
                             Update Category
                         </button>
                     </form>
-                </>
-            )}
         </div>
+        </>
     );
 };
 

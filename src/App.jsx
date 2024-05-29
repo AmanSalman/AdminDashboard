@@ -40,6 +40,11 @@ import OnwayOrder from './components/orders/OnwayOrder.jsx';
 import OrderDetails from './components/orders/OrderDetails';
 import SentOrders from './components/orders/SentOrders.jsx';
 import DeliveredOrder from './components/orders/DeliveredOrder.jsx';
+import AcceptAll from './components/orders/changeAll/AcceptAll.jsx';
+import Onway from './components/orders/changeAll/Onway.jsx';
+import DeliverAll from './components/orders/changeAll/DeliverAll.jsx';
+import RejectOrders from './components/orders/changeAll/RejectAll';
+import UserOrders from './components/users/UserOrders.jsx';
 
  
 
@@ -112,6 +117,26 @@ const router = createBrowserRouter([
       {
         path:'/rejectOrder/:orderId',
         element:<RejectOrder/>
+      },
+      {
+        path:'/acceptall',
+        element:<AcceptAll/>
+      },
+      {
+        path:'/onwayAll',
+        element:<Onway/>
+      },
+      {
+        path:'/deliverAll',
+        element:<DeliverAll/>
+      },
+      {
+        path:'/rejectAll',
+        element:<RejectOrders/>
+      },
+      {
+        path:'/userOrders',
+        element:<UserOrders/>
       },
       {
         path:'/profile',

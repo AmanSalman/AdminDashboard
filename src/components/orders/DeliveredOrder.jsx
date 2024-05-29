@@ -15,8 +15,8 @@ function DeliveredOrder() {
     try {
       setIsLoading(true);
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_URL2}/order/delivered/${id}`,
-        {},
+        `${import.meta.env.VITE_API_URL2}/order/${id}`,
+        {status: 'delivered'},
         {
           headers: { Authorization: `AmanGRAD__${token}` },
         }

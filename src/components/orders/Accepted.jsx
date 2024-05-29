@@ -148,17 +148,17 @@
 //         }
 //     }
 // }
+// Accepted.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import '../CSSFiles/general.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader.jsx';
-import Accept from '../../assets/accept (2).png';
 import Reject from '../../assets/cross-button.png';
-import { toast } from 'react-toastify';
 import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
+import ConfirmationModal from '../shared/ConfirmationModal.jsx';
 
 export default function Accepted() {
     const [isLoading, setIsLoading] = useState(false);
@@ -168,16 +168,22 @@ export default function Accepted() {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 4;
+    const navigate = useNavigate();
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalAction, setModalAction] = useState(() => () => {});
 
     const fetchOrders = async () => {
         try {
             setIsLoading(true);
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/order/accept`, {
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/order/orders`, {
                 headers: {
                     Authorization: `AmanGRAD__${token}`
                 }
             });
-            setOrders(data.accepted);
+            const accepted = data.orders.filter(order => order.status === 'accepted')
+            setOrders(accepted);
             setIsLoading(false);
         } catch (error) {
             const { response } = error;
@@ -189,6 +195,33 @@ export default function Accepted() {
     useEffect(() => {
         fetchOrders();
     }, []);
+
+    const openModal = (message, action) => {
+        setModalMessage(message);
+        setModalAction(() => action);
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    const handleConfirm = () => {
+        modalAction();
+        closeModal();
+    };
+
+    const handleRejectOrder = (orderId) => {
+        openModal('Are you sure you want to reject this order? This action cannot be undone.', () => {
+            navigate(`/rejectOrder/${orderId}`, { state: { from: '/accepted' } });
+        });
+    };
+
+    const handleOnWayAll = () => {
+        openModal('Are you sure you want to mark all orders as on way? This action cannot be undone.', () => {
+            navigate('/onwayAll');
+        });
+    };
 
     const filteredOrders = orders.filter(order =>
         order.Address.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -210,7 +243,7 @@ export default function Accepted() {
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item active" aria-current="page">Pages</li>
-                    <li className="breadcrumb-item active" aria-current="page">Orders</li>
+                    <li className="breadcrumb-item active" aria-current="page">Accepted Orders</li>
                 </ol>
             </nav>
             <div className='table-container container'>
@@ -223,20 +256,20 @@ export default function Accepted() {
                     <Error message={error} />
                 ) : (
                     <>
-                        <div className="search-container my-3">
-                            <input
-                                type="text"
-                                placeholder="Search by Location or Phone"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="form-control"
-                            />
-                             <Link className='button'>
-                                OnWay All Orders
-                            </Link>
-                        </div>
                         {displayedOrders.length > 0 ? (
                             <>
+                                <div className="search-container my-3">
+                                    <input
+                                        type="text"
+                                        placeholder="Search by Location or Phone"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="form-control"
+                                    />
+                                    <button className='button' onClick={handleOnWayAll}>
+                                        On Way All Orders
+                                    </button>
+                                </div>
                                 <table className='generaltable'>
                                     <thead>
                                         <tr>
@@ -245,7 +278,7 @@ export default function Accepted() {
                                             <th>Total Price</th>
                                             <th>Phone</th>
                                             <th>Status</th>
-                                            <th>Accept</th>
+                                            <th>On Way</th>
                                             <th>Reject</th>
                                             <th>Order Details</th>
                                         </tr>
@@ -264,14 +297,17 @@ export default function Accepted() {
                                                     </Link>
                                                 </td>
                                                 <td>
-                                                    <Link className='d-flex justify-content-center text-decoration-none' to={`/rejectOrder/${order._id}`} state={{ from: '/accepted' }}>
+                                                    <button
+                                                        className='d-flex justify-content-center text-decoration-none btn'
+                                                        onClick={() => handleRejectOrder(order._id)}
+                                                    >
                                                         <img src={Reject} alt='Reject' width={"32px"} />
-                                                    </Link>
+                                                    </button>
                                                 </td>
                                                 <td>
-                                                    <Link to={`/orderDetails/${order._id}`}>
-                                                        Show Books
-                                                    </Link>
+                                                <Link className='btn btn-outline-info' to={`/orderDetails/${order._id}`}>
+                                                    Show Books
+                                                </Link>
                                                 </td>
                                             </tr>
                                         ))}
@@ -297,6 +333,13 @@ export default function Accepted() {
                     </>
                 )}
             </div>
+
+            <ConfirmationModal
+                isOpen={modalIsOpen}
+                message={modalMessage}
+                onConfirm={handleConfirm}
+                onClose={closeModal}
+            />
         </>
     );
 

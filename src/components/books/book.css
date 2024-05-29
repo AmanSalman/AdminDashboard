@@ -1,11 +1,8 @@
-form div {
+.bookadd form div {
+    margin-bottom: 1rem;
     display: flex;
     justify-content: center;
     flex-direction: column;
-}
-
-.bookadd form div {
-    margin-bottom: 1rem;
 }
 
 .updateBook form div {

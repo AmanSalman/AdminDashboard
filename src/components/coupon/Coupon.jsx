@@ -176,6 +176,7 @@ import Update from "../../assets/pen.png";
 import { UserContext } from "../context/User.jsx";
 import Error from "../shared/Error.jsx";
 import { TbArrowBigLeftLineFilled } from "react-icons/tb";
+import ConfirmationModal from "../shared/ConfirmationModal.jsx";
 
 function Coupon() {
   const [error, setError] = useState(null);
@@ -186,6 +187,10 @@ function Coupon() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState(() => () => {});
 
   const fetchCoupons = async () => {
     try {
@@ -210,6 +215,29 @@ function Coupon() {
   useEffect(() => {
     fetchCoupons();
   }, []);
+
+
+  const openModal = (message, action) => {
+    setModalMessage(message);
+    setModalAction(() => action);
+    setModalIsOpen(true);
+};
+
+const closeModal = () => {
+    setModalIsOpen(false);
+};
+
+const handleConfirm = () => {
+    modalAction();
+    closeModal();
+};
+
+const handledelete= (id) => {
+    openModal('Are you sure you want to delete the coupon? This action cannot be undone.', () => {
+      console.log(id)
+        navigate(`/deleteCoupon/${id}`);
+    });
+};
 
   const filteredCoupons = coupons.filter(coupon =>
     coupon.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -280,12 +308,12 @@ function Coupon() {
                     <td>{coupon.status}</td>
                     <td>{coupon.Amount}</td>
                     <td>
-                      <Link
+                      <button
                         className="d-flex justify-content-center"
-                        to={`/deleteCoupon/${coupon._id}`}
+                        onClick={() => handledelete(coupon._id)}
                       >
                         <img src={Delete} alt="Delete" width={"45px"} />
-                      </Link>
+                      </button>
                     </td>
                     <td>
                       <Link
@@ -322,6 +350,13 @@ function Coupon() {
           </>
         )}
       </div>
+
+      <ConfirmationModal
+                isOpen={modalIsOpen}
+                message={modalMessage}
+                onConfirm={handleConfirm}
+                onClose={closeModal}
+            />
     </>
   );
 }

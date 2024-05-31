@@ -63,7 +63,7 @@ const CreateCoupon = () => {
             <input id="name" name="name" type="text" {...register('name', { required: true })} />
           </div>
           <div>
-            <label htmlFor="Amount">Price:</label>
+            <label htmlFor="Amount">Discount:</label>
             <input id="Amount" name="Amount" type="number" {...register('Amount', { required: true })} />
           </div>
           <div>

@@ -335,6 +335,9 @@ import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import Modal from 'react-modal';
+import Pagination from '../shared/Pagination.jsx';
+import ConfirmationModal from '../shared/ConfirmationModal.jsx';
+
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
@@ -409,7 +412,10 @@ function SentOrders() {
     const firstIndex = lastIndex - recordsPerPage;
     const displayedOrders = filteredOrders.slice(firstIndex, lastIndex);
     const npage = Math.ceil(filteredOrders.length / recordsPerPage);
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+
+    const onPageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     if (isLoading) {
         return <Loader />;
@@ -443,9 +449,9 @@ function SentOrders() {
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="form-control"
                                     />
-                                    <Link className='button' onClick={handledelivered}>
+                                    <button className='button' onClick={handledelivered}>
                                         Deliver All Orders
-                                    </Link>
+                                    </button>
                                 </div>
                                 <table className='generaltable'>
                                     <thead>
@@ -490,67 +496,21 @@ function SentOrders() {
                                         ))}
                                     </tbody>
                                 </table>
-                                <nav className='pagination-style'>
-                                    <ul className='pagination'>
-                                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                            <a href='#' className='page-link' onClick={prePage}>Prev</a>
-                                        </li>
-                                        {numbers.map((n, i) => (
-                                            <li key={i} className={`page-item ${currentPage === n ? 'active page-item bgPrimary' : 'page-item'}`}>
-                                                <a href='#' className='page-link' onClick={() => changeCPage(n)}>{n}</a>
-                                            </li>
-                                        ))}
-                                        <li className={`page-item ${currentPage === npage ? 'disabled' : ''}`}>
-                                            <a href='#' className='page-link' onClick={nextPage}>Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <Pagination currentPage={currentPage} totalPages={npage} onPageChange={onPageChange} />
                             </>
                         ) : <p className='text-center'>No orders found.</p>}
                     </>
                 )}
             </div>
 
-            <Modal
+            <ConfirmationModal
                 isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Confirmation"
-                style={{
-                    content: {
-                        top: '50%',
-                        left: '50%',
-                        right: 'auto',
-                        bottom: 'auto',
-                        marginRight: '-50%',
-                        transform: 'translate(-50%, -50%)',
-                    },
-                }}
-            >
-                <p>{modalMessage}</p>
-                <div className="d-flex justify-content-center">
-                    <button className="btn btn-danger me-2" onClick={handleConfirm}>Confirm</button>
-                    <button className="btn btn-secondary" onClick={closeModal}>Cancel</button>
-                </div>
-            </Modal>
+                message={modalMessage}
+                onConfirm={handleConfirm}
+                onClose={closeModal}
+            />
         </>
     );
-
-    function prePage() {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    }
-
-    function changeCPage(id) {
-        setCurrentPage(id);
-    }
-
-    function nextPage() {
-        if (currentPage !== npage) {
-            setCurrentPage(currentPage + 1);
-        }
-    }
 }
 
 export default SentOrders;
-

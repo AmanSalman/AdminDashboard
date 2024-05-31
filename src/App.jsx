@@ -45,6 +45,7 @@ import Onway from './components/orders/changeAll/Onway.jsx';
 import DeliverAll from './components/orders/changeAll/DeliverAll.jsx';
 import RejectOrders from './components/orders/changeAll/RejectAll';
 import UserOrders from './components/users/UserOrders.jsx';
+import ReviewCard from './components/books/ReviewCard.jsx';
 
  
 
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path:'/delete/:id',
         element:<DeleteBook/>
+      },
+      {
+        path:'/bookreview/:id',
+        element:<ReviewCard/>
       },
       {
         path:'/orders',
@@ -135,7 +140,7 @@ const router = createBrowserRouter([
         element:<RejectOrders/>
       },
       {
-        path:'/userOrders',
+        path:'/userOrders/:id',
         element:<UserOrders/>
       },
       {

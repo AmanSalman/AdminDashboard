@@ -141,7 +141,7 @@ function Home() {
 
 <div className='Home'>
 
-<div className="dropdown">
+{/* <div className="dropdown">
       <Link to={'/profile'}>
         <BiUser className='profile-icon' />
       </Link>
@@ -149,7 +149,18 @@ function Home() {
         <Link to="/profile">Profile</Link>
         <button onClick={handleLogout}>Log Out</button>
       </div>
-    </div>
+    </div> */}
+
+<div class="btn-group">
+  <button class="btn bg-white dropdown-toggle " type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+  <BiUser className='profile-icon' />
+  </button>
+  <ul class="dropdown-menu">
+    <li><Link class="dropdown-item" to={'/profile'}>profile</Link></li>
+    <li><button class="dropdown-item" onClick={handleLogout}>Log out</button></li>
+    <li><a class="dropdown-item" href="#">Menu item</a></li>
+  </ul>
+</div>
 </div>
 
 		<nav aria-label="breadcrumb">

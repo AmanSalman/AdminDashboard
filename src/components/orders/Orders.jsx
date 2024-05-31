@@ -337,6 +337,7 @@ import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import Modal from 'react-modal';
 import ConfirmationModal from '../shared/ConfirmationModal.jsx';
+import Pagination from '../shared/Pagination.jsx';
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
@@ -418,7 +419,10 @@ function Orders() {
     const firstIndex = lastIndex - recordsPerPage;
     const displayedOrders = filteredOrders.slice(firstIndex, lastIndex);
     const npage = Math.ceil(filteredOrders.length / recordsPerPage);
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+
+    const onPageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     if (isLoading) {
         return <Loader />;
@@ -502,22 +506,7 @@ function Orders() {
                                     ))}
                                 </tbody>
                             </table>
-
-                            <nav className='pagination-style'>
-                                <ul className='pagination'>
-                                    <li className='page-item'>
-                                        <a href='#' className='page-link' onClick={prePage}>Prev</a>
-                                    </li>
-                                    {numbers.map((n, i) => (
-                                        <li key={i} className={`page-item ${currentPage === n ? 'active page-item bgPrimary' : 'page-item'}`}>
-                                            <a href='#' className='page-link' onClick={() => changeCPage(n)}>{n}</a>
-                                        </li>
-                                    ))}
-                                    <li className='page-item'>
-                                        <a href='#' className='page-link' onClick={nextPage}>Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <Pagination currentPage={currentPage} totalPages={npage} onPageChange={onPageChange} />
                         </>
                     ) : <p className='text-center'>No orders found.</p>
                 )}
@@ -531,22 +520,6 @@ function Orders() {
             />
         </>
     );
-
-    function prePage() {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    }
-
-    function changeCPage(id) {
-        setCurrentPage(id);
-    }
-
-    function nextPage() {
-        if (currentPage !== npage) {
-            setCurrentPage(currentPage + 1);
-        }
-    }
 }
 
 export default Orders;

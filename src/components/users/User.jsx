@@ -169,7 +169,8 @@ import { UserContext } from '../context/User.jsx';
 import Loader from '../Loader/Loader.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
-import './User.css'; // Import the CSS file
+import './User.css';
+import Pagination from '../shared/Pagination.jsx';
 import ConfirmationModal from '../shared/ConfirmationModal.jsx';
 
 function User() {
@@ -183,7 +184,6 @@ function User() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalAction, setModalAction] = useState(() => () => {});
-
 
   const fetchUsers = async () => {
     try {
@@ -205,42 +205,40 @@ function User() {
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
-  const lastIndex = currentPage * recordsPerPage;
-  const firstIndex = lastIndex - recordsPerPage;
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-
   const openModal = (message, action) => {
     setModalMessage(message);
     setModalAction(() => action);
     setModalIsOpen(true);
-};
+  };
 
-const closeModal = () => {
+  const closeModal = () => {
     setModalIsOpen(false);
-};
+  };
 
-const handleConfirm = () => {
+  const handleConfirm = () => {
     modalAction();
     closeModal();
-};
+  };
 
-const handledelete= (id) => {
+  const handleDelete = (id) => {
     openModal('Are you sure you want to disable the user? This action cannot be undone.', () => {
-        navigate(`/users/disable/${id}`);
+      navigate(`/users/disable/${id}`);
     });
-};
+  };
 
   const filteredUsers = users.filter(user =>
     user[searchCriteria]?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
   const records = filteredUsers.slice(firstIndex, lastIndex);
   const npage = Math.ceil(filteredUsers.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
 
   if (isLoading) return <Loader />;
 
@@ -302,7 +300,7 @@ const handledelete= (id) => {
                     <td>{user.email}</td>
                     <td>
                       {user.status !== 'Disabled' &&
-                        <button className="d-flex justify-content-center" onClick={()=>handledelete(user._id)}>
+                        <button className="d-flex justify-content-center" onClick={() => handleDelete(user._id)}>
                           <img src={Reject} alt="Reject" width="45px" />
                         </button>
                       }
@@ -315,7 +313,7 @@ const handledelete= (id) => {
                       }
                     </td>
                     <td>
-                      <Link to={'/userOrders'} className='btn btn-outline-dark'>
+                      <Link to={`/userOrders/${user._id}`} className='btn btn-outline-dark'>
                         Show
                       </Link>
                     </td>
@@ -323,50 +321,19 @@ const handledelete= (id) => {
                 ))}
               </tbody>
             </table>
-            <nav className="pagination-style">
-              <ul className="pagination">
-                <li className="page-item">
-                  <a href="#" className="page-link" onClick={prePage}> Prev</a>
-                </li>
-                {numbers.map((n, i) => (
-                  <li className={`page-item ${currentPage === n ? 'active bgPrimary' : ''}`} key={i}>
-                    <a href="#" className="page-link" onClick={() => changeCPage(n)}>{n}</a>
-                  </li>
-                ))}
-                <li className="page-item">
-                  <a href="#" className="page-link" onClick={nextPage}> Next</a>
-                </li>
-              </ul>
-            </nav>
+            <Pagination currentPage={currentPage} totalPages={npage} onPageChange={setCurrentPage} />
           </>
         }
       </div>
 
-
       <ConfirmationModal
-                isOpen={modalIsOpen}
-                message={modalMessage}
-                onConfirm={handleConfirm}
-                onClose={closeModal}
-            />
+        isOpen={modalIsOpen}
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onClose={closeModal}
+      />
     </>
   );
-
-  function prePage() {
-    if (currentPage !== 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  function changeCPage(id) {
-    setCurrentPage(id);
-  }
-
-  function nextPage() {
-    if (currentPage !== npage) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
 }
 
 export default User;

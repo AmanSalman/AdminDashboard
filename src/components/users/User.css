@@ -29,3 +29,14 @@
   }
 
   
+  /* text's colors */
+
+  .text-yellow {
+    color: yellow !important;
+  }
+
+  .text-orange {
+    color: orange;
+  }
+
+  

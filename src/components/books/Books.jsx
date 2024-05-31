@@ -189,6 +189,7 @@
 // }
 
 // export default Books;
+
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -200,6 +201,8 @@ import Error from "./../shared/Error";
 import { TbArrowBigLeftLineFilled } from "react-icons/tb";
 import './book.css'
 import ConfirmationModal from "../shared/ConfirmationModal.jsx";
+import Pagination from "../shared/Pagination.jsx";
+
 function Books() {
   const [error, setError] = useState(null);
   const [books, setBooks] = useState([]);
@@ -221,7 +224,6 @@ function Books() {
         { headers: { Authorization: `AmanGRAD__${token}` } }
       );
       setBooks(data.Books);
-      console.log(data.Books)
       setIsLoading(false);
     } catch (error) {
       const { response } = error;
@@ -234,12 +236,6 @@ function Books() {
     }
   };
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 3;
-  const lastIndex = currentPage * recordsPerPage;
-  const firstIndex = lastIndex - recordsPerPage;
-
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -248,36 +244,43 @@ function Books() {
     setModalMessage(message);
     setModalAction(() => action);
     setModalIsOpen(true);
-};
+  };
 
-const closeModal = () => {
+  const closeModal = () => {
     setModalIsOpen(false);
-};
+  };
 
-const handleConfirm = () => {
+  const handleConfirm = () => {
     modalAction();
     closeModal();
-};
+  };
 
-const handledelete= (bookId) => {
+  const handledelete= (bookId) => {
     openModal('Are you sure you want to delete the book? This action cannot be undone.', () => {
         navigate(`/delete/${bookId}`);
     });
-};
+  };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const filteredBooks = books.filter(book =>
     book[searchCriteria]?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 3;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+
   const records = filteredBooks.slice(firstIndex, lastIndex);
   const npage = Math.ceil(filteredBooks.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
 
-  if (isLoading) {
-    return <Loader />;
+
+  if(isLoading){
+    return <Loader/>
   }
-
   return (
     <>
       <nav aria-label="breadcrumb">
@@ -337,6 +340,7 @@ const handledelete= (bookId) => {
                   <th>Discount</th>
                   <th>Price</th>
                   <th>Final Price</th>
+                  <th>Reviews</th>
                   <th>Delete</th>
                   <th>Update</th>
                 </tr>
@@ -365,6 +369,11 @@ const handledelete= (bookId) => {
                     <td>{book.price}</td>
                     <td>{book.finalPrice}</td>
                     <td>
+                    <Link to={`/bookreview/${book._id}`} className='btn btn-outline-dark'>
+                    Reviews
+                      </Link>
+                    </td>
+                    <td>
                       <button
                         className="d-flex justify-content-center"
                         onClick={()=>handledelete(book.id)}
@@ -385,57 +394,18 @@ const handledelete= (bookId) => {
               </tbody>
             </table>
 
-            <nav className="pagination-style">
-              <ul className="pagination">
-                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                  <button className="page-link" onClick={prePage} disabled={currentPage === 1}>
-                    Prev
-                  </button>
-                </li>
-                {numbers.map((n, i) => (
-                  <li
-                    className={`page-item ${currentPage === n ? "active" : ""}`}
-                    key={i}
-                  >
-                    <button className="page-link" onClick={() => changeCPage(n)}>
-                      {n}
-                    </button>
-                  </li>
-                ))}
-                <li className={`page-item ${currentPage === npage ? "disabled" : ""}`}>
-                  <button className="page-link" onClick={nextPage} disabled={currentPage === npage}>
-                    Next
-                  </button>
-                </li>
-              </ul>
-            </nav>
+            <Pagination currentPage={currentPage} totalPages={npage} onPageChange={handlePageChange} />
           </>
         )}
       </div>
       <ConfirmationModal
-                isOpen={modalIsOpen}
-                message={modalMessage}
-                onConfirm={handleConfirm}
-                onClose={closeModal}
-            />
+        isOpen={modalIsOpen}
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onClose={closeModal}
+      />
     </>
   );
-
-  function prePage() {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  function changeCPage(id) {
-    setCurrentPage(id);
-  }
-
-  function nextPage() {
-    if (currentPage < npage) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
 }
 
 export default Books;

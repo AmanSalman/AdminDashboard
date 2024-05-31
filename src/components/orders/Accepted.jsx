@@ -159,6 +159,7 @@ import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import ConfirmationModal from '../shared/ConfirmationModal.jsx';
+import Pagination from '../shared/Pagination.jsx';
 
 export default function Accepted() {
     const [isLoading, setIsLoading] = useState(false);
@@ -232,7 +233,10 @@ export default function Accepted() {
     const firstIndex = lastIndex - recordsPerPage;
     const displayedOrders = filteredOrders.slice(firstIndex, lastIndex);
     const npage = Math.ceil(filteredOrders.length / recordsPerPage);
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+
+    const onPageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     if (isLoading) {
         return <Loader />;
@@ -305,29 +309,15 @@ export default function Accepted() {
                                                     </button>
                                                 </td>
                                                 <td>
-                                                <Link className='btn btn-outline-info' to={`/orderDetails/${order._id}`}>
-                                                    Show Books
-                                                </Link>
+                                                    <Link className='btn btn-outline-info' to={`/orderDetails/${order._id}`}>
+                                                        Show Books
+                                                    </Link>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
-                                <nav className='pagination-style'>
-                                    <ul className='pagination'>
-                                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                            <a href='#' className='page-link' onClick={prePage}>Prev</a>
-                                        </li>
-                                        {numbers.map((n, i) => (
-                                            <li key={i} className={`page-item ${currentPage === n ? 'active page-item bgPrimary' : 'page-item'}`}>
-                                                <a href='#' className='page-link' onClick={() => changeCPage(n)}>{n}</a>
-                                            </li>
-                                        ))}
-                                        <li className={`page-item ${currentPage === npage ? 'disabled' : ''}`}>
-                                            <a href='#' className='page-link' onClick={nextPage}>Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <Pagination currentPage={currentPage} totalPages={npage} onPageChange={onPageChange} />
                             </>
                         ) : <p className='text-center'>No orders found.</p>}
                     </>
@@ -342,20 +332,4 @@ export default function Accepted() {
             />
         </>
     );
-
-    function prePage() {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    }
-
-    function changeCPage(id) {
-        setCurrentPage(id);
-    }
-
-    function nextPage() {
-        if (currentPage !== npage) {
-            setCurrentPage(currentPage + 1);
-        }
-    }
 }

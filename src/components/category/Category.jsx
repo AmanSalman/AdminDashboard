@@ -148,6 +148,7 @@ import { UserContext } from '../context/User.jsx';
 import Error from '../shared/Error.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import ConfirmationModal from '../shared/ConfirmationModal.jsx';
+import Pagination from '../shared/Pagination.jsx';
 
 function Category() {
   const [categories, setCategories] = useState([]);
@@ -157,11 +158,11 @@ function Category() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
+  const navigate = useNavigate();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalAction, setModalAction] = useState(() => () => {});
-  const navigate = useNavigate();
 
   const fetchCategories = async () => {
     try {
@@ -185,33 +186,32 @@ function Category() {
     setModalMessage(message);
     setModalAction(() => action);
     setModalIsOpen(true);
-};
+  };
 
-const closeModal = () => {
+  const closeModal = () => {
     setModalIsOpen(false);
-};
+  };
 
-const handleConfirm = () => {
+  const handleConfirm = () => {
     modalAction();
     closeModal();
-};
+  };
 
-const handledelete= (id) => {
+  const handleDelete = (id) => {
     openModal('Are you sure you want to delete the category? This action cannot be undone.', () => {
       console.log(id)
-        navigate(`/deleteCategory/${id}`);
+      navigate(`/deleteCategory/${id}`);
     });
-};
+  };
 
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const LastIndex = currentPage * recordsPerPage;
-  const firstIndex = LastIndex - recordsPerPage;
-  const displayedCategories = filteredCategories.slice(firstIndex, LastIndex);
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const displayedCategories = filteredCategories.slice(firstIndex, lastIndex);
   const npage = Math.ceil(filteredCategories.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -282,7 +282,7 @@ const handledelete= (id) => {
                       />
                     </td>
                     <td>
-                      <button onClick={()=>handledelete(category._id)}
+                      <button onClick={()=>handleDelete(category._id)}
                         className='d-flex justify-content-center'
                       >
                         <img src={Delete} alt='Delete' width={"45px"} />
@@ -301,30 +301,16 @@ const handledelete= (id) => {
                 ))}
               </tbody>
             </table>
-            <nav style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <ul className='pagination'>
-                <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                  <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Prev</button>
-                </li>
-                {numbers.map((n) => (
-                  <li key={n} className={`page-item ${currentPage === n ? 'active' : ''}`}>
-                    <button className="page-link" onClick={() => handlePageChange(n)}>{n}</button>
-                  </li>
-                ))}
-                <li className={`page-item ${currentPage === npage ? 'disabled' : ''}`}>
-                  <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === npage}>Next</button>
-                </li>
-              </ul>
-            </nav>
+            <Pagination currentPage={currentPage} totalPages={npage} onPageChange={handlePageChange} />
           </>
         )}
       </div>
       <ConfirmationModal
-                isOpen={modalIsOpen}
-                message={modalMessage}
-                onConfirm={handleConfirm}
-                onClose={closeModal}
-            />
+        isOpen={modalIsOpen}
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onClose={closeModal}
+      />
     </>
   );
 }

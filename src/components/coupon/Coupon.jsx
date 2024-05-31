@@ -177,6 +177,7 @@ import { UserContext } from "../context/User.jsx";
 import Error from "../shared/Error.jsx";
 import { TbArrowBigLeftLineFilled } from "react-icons/tb";
 import ConfirmationModal from "../shared/ConfirmationModal.jsx";
+import Pagination from "../shared/Pagination.jsx";
 
 function Coupon() {
   const [error, setError] = useState(null);
@@ -221,33 +222,32 @@ function Coupon() {
     setModalMessage(message);
     setModalAction(() => action);
     setModalIsOpen(true);
-};
+  };
 
-const closeModal = () => {
+  const closeModal = () => {
     setModalIsOpen(false);
-};
+  };
 
-const handleConfirm = () => {
+  const handleConfirm = () => {
     modalAction();
     closeModal();
-};
+  };
 
-const handledelete= (id) => {
+  const handleDelete= (id) => {
     openModal('Are you sure you want to delete the coupon? This action cannot be undone.', () => {
       console.log(id)
         navigate(`/deleteCoupon/${id}`);
     });
-};
+  };
 
   const filteredCoupons = coupons.filter(coupon =>
     coupon.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const LastIndex = currentPage * recordsPerPage;
-  const firstIndex = LastIndex - recordsPerPage;
-  const displayedCoupons = filteredCoupons.slice(firstIndex, LastIndex);
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const displayedCoupons = filteredCoupons.slice(firstIndex, lastIndex);
   const npage = Math.ceil(filteredCoupons.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -310,7 +310,7 @@ const handledelete= (id) => {
                     <td>
                       <button
                         className="d-flex justify-content-center"
-                        onClick={() => handledelete(coupon._id)}
+                        onClick={() => handleDelete(coupon._id)}
                       >
                         <img src={Delete} alt="Delete" width={"45px"} />
                       </button>
@@ -327,36 +327,17 @@ const handledelete= (id) => {
                 ))}
               </tbody>
             </table>
-
-            <nav style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <ul className="pagination">
-                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                  <button className="page-link" onClick={() => setCurrentPage(prevPage => prevPage - 1)} disabled={currentPage === 1}>
-                    Prev
-                  </button>
-                </li>
-                {numbers.map((n, i) => (
-                  <li className={`page-item ${currentPage === n ? "active" : ""}`} key={i}>
-                    <button className="page-link" onClick={() => handlePageChange(n)}>{n}</button>
-                  </li>
-                ))}
-                <li className={`page-item ${currentPage === npage ? "disabled" : ""}`}>
-                  <button className="page-link" onClick={() => setCurrentPage(prevPage => prevPage + 1)} disabled={currentPage === npage}>
-                    Next
-                  </button>
-                </li>
-              </ul>
-            </nav>
+            <Pagination currentPage={currentPage} totalPages={npage} onPageChange={handlePageChange} />
           </>
         )}
       </div>
 
       <ConfirmationModal
-                isOpen={modalIsOpen}
-                message={modalMessage}
-                onConfirm={handleConfirm}
-                onClose={closeModal}
-            />
+        isOpen={modalIsOpen}
+        message={modalMessage}
+        onConfirm={handleConfirm}
+        onClose={closeModal}
+      />
     </>
   );
 }

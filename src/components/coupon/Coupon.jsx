@@ -200,6 +200,7 @@ function Coupon() {
         `${import.meta.env.VITE_API_URL2}/coupon`,
         { headers: { Authorization: `AmanGRAD__${token}` } }
       );
+      console.log(data)
       setCoupons(data.coupon);
       setIsLoading(false);
     } catch (error) {
@@ -240,14 +241,14 @@ function Coupon() {
     });
   };
 
-  const filteredCoupons = coupons.filter(coupon =>
+  const filteredCoupons = coupons?.filter(coupon =>
     coupon.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const displayedCoupons = filteredCoupons.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(filteredCoupons.length / recordsPerPage);
+  const displayedCoupons = filteredCoupons?.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(filteredCoupons?.length / recordsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -272,12 +273,13 @@ function Coupon() {
           </li>
         </ol>
       </nav>
-
+      
       <div className="table-container border container">
         <Link to={'/'} className="arrow"><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
         {error != null ? (
           <Error message={error} />
         ) : (
+          coupons?.length > 0 ?
           <>
             <div className="search-container my-3">
               <input
@@ -302,7 +304,7 @@ function Coupon() {
                 </tr>
               </thead>
               <tbody>
-                {displayedCoupons.map((coupon) => (
+                {displayedCoupons?.map((coupon) => (
                   <tr key={coupon._id}>
                     <td>{coupon.name}</td>
                     <td>{coupon.status}</td>
@@ -328,7 +330,7 @@ function Coupon() {
               </tbody>
             </table>
             <Pagination currentPage={currentPage} totalPages={npage} onPageChange={handlePageChange} />
-          </>
+          </>: (<p className="text-center">no coupons found</p>)
         )}
       </div>
 

@@ -237,16 +237,21 @@
 
 import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../context/User';
 import './book.css';
 import Loader from '../Loader/Loader';
 import { toast } from 'react-toastify';
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
+import { createBookSchema } from './validation.js'
 
 const UpdateBook = () => {
     const { id } = useParams();
-    const { register, handleSubmit, setValue, getValues } = useForm();
+    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({
+        resolver: yupResolver(createBookSchema)
+    });
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const { token } = useContext(UserContext);
@@ -301,7 +306,7 @@ const UpdateBook = () => {
             toast.error(response?.data?.message || 'Failed to fetch categories');
             console.error(error);
             setLoading(false)
-        }finally {
+        } finally {
             setLoading(false)
         }
     };
@@ -382,26 +387,35 @@ const UpdateBook = () => {
                 </li>
             </ol>
             <div className="component-container updateBook">
+                <Link to={'/'} className="arrow">
+                    <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/>
+                </Link>
+                
                 <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                     <div>
                         <label>ISBN :</label>
                         <input {...register('isbn')} type="text" />
+                        {errors.isbn && <p className='text-danger'>{errors.isbn.message}</p>}
                     </div>
                     <div>
                         <label>Title :</label>
                         <input {...register('title')} type="text" />
+                        {errors.title && <p className='text-danger'>{errors.title.message}</p>}
                     </div>
                     <div>
                         <label>Price :</label>
                         <input {...register('price')} type="number" />
+                        {errors.price && <p className='text-danger'>{errors.price.message}</p>}
                     </div>
                     <div>
                         <label>Description :</label>
                         <textarea {...register('description')} />
+                        {errors.description && <p className='text-danger'>{errors.description.message}</p>}
                     </div>
                     <div>
                         <label>Publishing House :</label>
                         <input {...register('publishingHouse')} type="text" />
+                        {errors.publishingHouse && <p className='text-danger'>{errors.publishingHouse.message}</p>}
                     </div>
                     <div>
                         <label>Category :</label>
@@ -412,14 +426,17 @@ const UpdateBook = () => {
                                 </option>
                             ))}
                         </select>
+                        {errors.categoryId && <p className='text-danger'>{errors.categoryId.message}</p>}
                     </div>
                     <div>
                         <label>Discount :</label>
                         <input {...register('Discount')} type="number" />
+                        {errors.Discount && <p className='text-danger'>{errors.Discount.message}</p>}
                     </div>
                     <div>
                         <label>Stock :</label>
                         <input {...register('stock')} type="number" />
+                        {errors.stock && <p className='text-danger'>{errors.stock.message}</p>}
                     </div>
                     <div>
                         <label>Status :</label>
@@ -427,15 +444,18 @@ const UpdateBook = () => {
                             <option value="Active">Active</option>
                             <option value="Disabled">Disabled</option>
                         </select>
+                        {errors.status && <p className='text-danger'>{errors.status.message}</p>}
                     </div>
                     <div>
                         <label>Main Image :</label>
                         {mainImageUrl && <img src={mainImageUrl} alt="Main Book" className='main-img' />}
                         <input type="file" onChange={handleMainImageChange} />
+                        {errors.mainImage && <p className='text-danger'>{errors.mainImage.message}</p>}
                     </div>
                     <div>
                         <label>Sub Images :</label>
                         <Link to={`/books/update-subimages/${id}`}>Update Sub Images</Link>
+                        {errors.subImages && <p className='text-danger'>{errors.subImages.message}</p>}
                     </div>
                     <button type="submit" className="button">Update Book</button>
                 </form>

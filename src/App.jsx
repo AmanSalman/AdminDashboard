@@ -46,6 +46,7 @@ import DeliverAll from './components/orders/changeAll/DeliverAll.jsx';
 import RejectOrders from './components/orders/changeAll/RejectAll';
 import UserOrders from './components/users/UserOrders.jsx';
 import ReviewCard from './components/books/ReviewCard.jsx';
+import DeleteReview from './components/books/DeleteReview.jsx';
 
  
 
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path:'/bookreview/:id',
         element:<ReviewCard/>
+      },
+      {
+        path:'/deleteReview/:id',
+        element:<DeleteReview/>
       },
       {
         path:'/orders',

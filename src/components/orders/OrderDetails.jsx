@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { UserContext } from '../context/User'
 import Loader from '../Loader/Loader'
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb'
@@ -12,6 +12,7 @@ function OrderDetails() {
   const [order, setOrder] = useState([])
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true) 
+  const location = useLocation()
   const getDetails = async ()=>{
     try {
       setLoading(true)
@@ -29,6 +30,7 @@ function OrderDetails() {
     }
   }
   useEffect(() =>{
+    console.log(location)
     getDetails()
   },[])
 
@@ -49,11 +51,9 @@ function OrderDetails() {
             </nav>
 
     <div className="component-container ">
-    {/* <div className='arrow-button'>
-              <Link to={'/orderDetails'} className='arrow'>
-                  <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
-              </Link>
-            </div> */}
+    <Link to={location?.state?.from || '/orders'} className='arrow'>
+                        <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
+                    </Link>
             <div className="container-cards">
 
       {

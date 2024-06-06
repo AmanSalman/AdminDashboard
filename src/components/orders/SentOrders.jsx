@@ -488,7 +488,7 @@ function SentOrders() {
                                                     </button>
                                                 </td>
                                                 <td>
-                                                <Link className='btn btn-outline-info' to={`/orderDetails/${order._id}`}>
+                                                <Link className='btn btn-outline-info' to={`/orderDetails/${order._id}`} state={{ from: '/sendOrders' }}>
                                                     Show Books
                                                 </Link>
                                                 </td>

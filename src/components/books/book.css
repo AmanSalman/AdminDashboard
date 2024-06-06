@@ -1,12 +1,8 @@
-.bookadd form div {
+.bookadd form div, .updateBook form div  {
     margin-bottom: 1rem;
     display: flex;
     justify-content: center;
     flex-direction: column;
-}
-
-.updateBook form div {
-    margin-bottom: 1rem;
 }
 
 .subImages, .main-img  {
@@ -60,3 +56,21 @@
     text-align: center;
     /* padding:10px !important;
     border-radius: 50% !important; */
+
+/* .addCategory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} */
+
+.addCategory form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.addCategory form input {
+    width: 70%;
+}

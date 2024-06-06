@@ -6,10 +6,11 @@ import commonStyles from "../shared/commonStyles.js";
 import "./Profile.css";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { ChangePasswordSchema } from "../Register/validation.js";
 
 function ChangePassword() {
   const { token } = useContext(UserContext);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const initialValues = {
     oldPassword: "",
     newPassword: "",
@@ -19,34 +20,39 @@ function ChangePassword() {
 
   const onSubmit = async (values) => {
     setLoading(true);
-        try {
-          if(values.newPassword !== values.confirmNewPassword){
-            toast.error("Passwords do not match");
-            setLoading(false);
-            return;
-          }
-            const {data} = await axios.patch(`${import.meta.env.VITE_API_URL2}/auth/changePassword`, values, {
-                headers: { Authorization: `AmanGRAD__${token}` },
-            });
-            setLoading(false);
-            console.log(data)
-            if(data.message == 'success') {
-                toast.success("Updated successfully");
-            }
-        } catch (error) {
-            const {response} = error;
-            toast.error(response?.data?.message || "Failed to change password");
-            console.error(error);
-            setLoading(false);
-        } finally {
-            setLoading(false);
+    try {
+      if (values.newPassword !== values.confirmNewPassword) {
+        toast.error("Passwords do not match");
+        setLoading(false);
+        return;
+      }
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL2}/auth/changePassword`,
+        values,
+        {
+          headers: { Authorization: `AmanGRAD__${token}` },
         }
-        navigate('/profile')
+      );
+      setLoading(false);
+      console.log(data);
+      if (data.message === "success") {
+        toast.success("Updated successfully");
+      }
+    } catch (error) {
+      const { response } = error;
+      toast.error(response?.data?.message || "Failed to change password");
+      console.error(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+    navigate("/profile");
   };
 
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema: ChangePasswordSchema,
   });
 
   const handleInputChange = (e) => {
@@ -99,25 +105,26 @@ function ChangePassword() {
         >
           {/* Render inputs based on inputConfigurations array */}
           {inputConfigurations.map((input) => (
-            <Input
-              key={input.id}
-              id={input.id}
-              title={input.title}
-              type={input.type}
-              name={input.name}
-              value={formik.values[input.name]}
-              onChange={handleInputChange} // Change to handleInputChange
-              onBlur={formik.handleBlur}
-              errors={formik.errors}
-              required={input.required}
-            />
+            <div key={input.id}>
+              <Input
+                id={input.id}
+                title={input.title}
+                type={input.type}
+                name={input.name}
+                value={formik.values[input.name]} // Ensure value prop is passed
+                onChange={handleInputChange}
+                onBlur={formik.handleBlur}
+                required={input.required}
+              />
+              {/* Display error message if the field is required, touched, and has an error */}
+              {input.required && formik.touched[input.name] && formik.errors[input.name] && (
+                <p className="text-danger">{formik.errors[input.name]}</p>
+              )}
+            </div>
           ))}
           {/* Show the button only when changes are made */}
           {changesMade && (
-            <button
-              type="submit"
-              className="button"
-            >
+            <button type="submit" className="button">
               Submit
             </button>
           )}

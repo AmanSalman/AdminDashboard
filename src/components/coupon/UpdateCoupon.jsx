@@ -8,10 +8,15 @@ import Loader from '../Loader/Loader';
 import { toast } from 'react-toastify';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import Error from '../shared/Error';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from './Coupon.validation';
 
-const UpdateCoupon= () => {
+
+const UpdateCoupon = () => {
     const { id } = useParams();
-    const { register, handleSubmit, setValue, getValues } = useForm();
+    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    });
     const [loading, setLoading] = useState(true);
     const { token } = useContext(UserContext);
     const [initialCouponData, setInitialCouponData] = useState({});
@@ -32,8 +37,7 @@ const UpdateCoupon= () => {
             setValue('status', coupondata.status);
             setValue('Amount', coupondata.Amount);
         } catch (error) {
-              setError(' while fetching the coupon information');
-            setLoading(false);
+            setError('Error while fetching the coupon information');
         } finally {
             setLoading(false);
         }
@@ -48,7 +52,6 @@ const UpdateCoupon= () => {
         }
         return changedData;
     };
-
 
     const onSubmit = async (data) => {
         const currentValues = getValues();
@@ -67,7 +70,6 @@ const UpdateCoupon= () => {
                 }
             });
 
-            console.log(data)
             if (data.message === "success") {
                 toast.success("Coupon updated successfully");
                 navigate(`/coupons`);
@@ -75,7 +77,6 @@ const UpdateCoupon= () => {
         } catch (error) {
             const { response } = error;
             toast.error(response?.data?.message || 'Failed to update coupon');
-            console.error(error);
         } finally {
             setLoading(false);
         }
@@ -99,35 +100,34 @@ const UpdateCoupon= () => {
                     Update Coupon
                 </li>
             </ol>
-               
-                   <div className="component-container updateBook">
-            <Link to={'/coupons'}><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
-            {
-             error != null ? (
-                <Error message={error} />
-              ):<>
-                <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-                    <div>
-                        <label>Coupon's Name :</label>
-                        <input {...register('name')} type="text" />
-                    </div>
-                    <div>
-                        <label>Amount :</label>
-                        <input {...register('Amount')} type="number" />
-                    </div>
-                    <div>
-                        <label>Status :</label>
-                        <select {...register('status')}>
-                            <option value="active">Active</option>
-                            <option value="inactive">inactive</option>
-                        </select>
-                    </div>
-                    <button type="submit" className="button">Update Coupon</button>
-                </form>
-                </>
-            }
+            <div className="component-container updateBook">
+                <Link to={'/coupons'} className='arrow'><TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/></Link>
+                {error ? (
+                    <Error message={error} />
+                ) : (
+                    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+                        <div>
+                            <label htmlFor="name">Coupon's Name :</label>
+                            <input id="name" {...register('name')} type="text" />
+                            {errors.name && <p className="text-danger">{errors.name.message}</p>}
+                        </div>
+                        <div>
+                            <label htmlFor="Amount">Amount :</label>
+                            <input id="Amount" {...register('Amount')} type="number" />
+                            {errors.Amount && <p className="text-danger">{errors.Amount.message}</p>}
+                        </div>
+                        <div>
+                            <label htmlFor="status">Status :</label>
+                            <select id="status" {...register('status')}>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            {errors.status && <p className="text-danger">{errors.status.message}</p>}
+                        </div>
+                        <button type="submit" className="button">Update Coupon</button>
+                    </form>
+                )}
             </div>
-           
         </>
     );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
 import commonStyles from './commonStyles.js';
-import './File.css'
+import './File.css';
 
-export default function Input({ id, title, type, name, value, onChange, onBlur, errors, required, className,readOnly }) {
+export default function Input({ id, title, type, name, value, onChange, onBlur, errors, required, className, readOnly }) {
     return (
         <div className='d-flex flex-column w-100'>
             <label htmlFor={id} className="form-label">
@@ -30,14 +30,14 @@ export default function Input({ id, title, type, name, value, onChange, onBlur, 
                     id={id}
                     onChange={onChange}
                     onBlur={onBlur}
-                    defaultValue={value} // Use defaultValue instead of value
+                    value={value || ''} // Use value prop instead of defaultValue
                     style={styles.input}
                     required={required}
                     placeholder={title}
                     readOnly={readOnly}
                 />
             )}
-            {errors[name] && <p className='text-danger'>{errors[name]}</p>}
+            {errors && typeof errors === 'string' && <p className='text-danger'>{errors}</p>}
         </div>
     );
 }

@@ -1,137 +1,127 @@
-import React, {useState} from 'react';
-import commonStyles from '../shared/commonStyles.js';
-import './Register.css';
-import {useFormik} from 'formik';
-import axios from 'axios';
-import Loader from '../Loader/Loader.jsx';
-import {toast} from 'react-toastify';
-import {Link, useNavigate} from 'react-router-dom';
-import Logo from '../../assets/Logo.png';
+import React, { useState } from "react";
+import commonStyles from "../shared/commonStyles.js";
+import "./Register.css";
+import { useFormik } from "formik";
+import axios from "axios";
+import Loader from "../Loader/Loader.jsx";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "../../assets/Logo.png";
+import { forgetPasswordSchema } from "./validation.js";
+import Welcome from "./Welcome.jsx";
+import { TbArrowBigLeftLineFilled } from "react-icons/tb";
 
 function ForgetPassword() {
-    const [loading, setLoading] = useState(false);
-	const navigate = useNavigate();
-	const initialValues = {
-		email: '',
-		password:'',
-		code:''
-	};
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const initialValues = {
+    email: "",
+    password: "",
+    code: "",
+  };
 
-	const onSubmit = async (user) => {
-		console.log(user)
-		try {
-			setLoading(true);
-			console.log(user)
-			const {data} = await axios.patch(`${
-				import.meta.env.VITE_API_URL2
-			}/auth/forgetPassword`, user);
-			console.log(data)
-			if (data.message == 'success') {
-				toast.success("registered successfully")
-				navigate('/login')
-				setLoading(false)
-			} 
-			setLoading(false)
-		} catch (error) {
-			setLoading(false)
-			console.log(error);
-		}
-	};
+  const onSubmit = async (user) => {
+    console.log(user);
+    try {
+      setLoading(true);
+      console.log(user);
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL2}/auth/forgetPassword`,
+        user
+      );
+      console.log(data);
+      if (data.message == "success") {
+        toast.success("registered successfully");
+        navigate("/login");
+        setLoading(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
-	const formik = useFormik({
-		initialValues, 
-		onSubmit
-	});
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema: forgetPasswordSchema,
+  });
 
-	return (
-		<>
-			{
-			loading ? (
-				<Loader/>) : <div className='d-flex align-items-center flex-wrap vh-100'>
+  return (
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="Grid-Auth">
+          <Welcome />
 
-					<div className='d-flex justify-content-center align-items-center vh-100 flex-item-registration' style={{backgroundColor:'#00B1EB'}}>
+          <div className="form-wrapper">
+					<div className='arrow-button'>
+                    <Link to={'/forgotPassword'} className='arrow'>
+                        <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
+                    </Link>
+                </div>
+            <form
+              onSubmit={formik.handleSubmit}
+              style={styles.container}
+              className=" align-items-center justify-content-center"
+            >
+            <div className="text-center">
+              <h2 className="Form-header">Reset Password</h2>
+            </div>
+              <div className="form-group">
+                <input
+                  type="email"
+                  {...formik.getFieldProps("email")}
+                  placeholder="email"
+                  style={styles.input}
+                />
+                {formik.errors.email && formik.touched.email && (
+                  <p className="text-danger">{formik.errors.email}</p>
+                )}
+              </div>
 
-						<img src={Logo}
-							alt='logo'
-							className=' img-fluid'
-							style={
-								{
-									borderRadius: '50%',
-									width: '35%',
-									// border: 'solid 1px rgb(156, 131, 131)',
-									margin: '1em'
-								}
-							}/>
-							<div className='mediaQheader'> 
-
-						<h1 className='HeadingRegister'>Hello Again!</h1>
-						<h2 className='subHeading'>Welcome back</h2>
-							</div>
-					</div>
-
-					{/* <h2 className='text-uppercase heading text-dark'>Register :</h2> */}
-                    <div className='flex-item-registration1 flex-grow-1'>
-					<div className='text-center'>
-                        <h2 className='maincolortext'>Reset Password</h2>
-                        </div>
-                       <form onSubmit={formik.handleSubmit} style={styles.container} className=' align-items-center justify-content-center'>
-						<input type="email"
-							value={formik.values.email}
-							onChange={formik.handleChange}
-							placeholder="email"
-							style={styles.input}
-							id="email"
-							name="email"
-							title="email"
-							/>
-                            <input type="password"
-							value={
-								formik.values.password
-							}
-							onChange={
-								formik.handleChange
-							}
-							placeholder="password"
-							style={
-								styles.input
-							}
-							id="password"
-							name="password"
-							title="password"
-							/>
-
-                            <input type="code"
-							value={
-								formik.values.code
-							}
-							onChange={
-								formik.handleChange
-							}
-							placeholder="code"
-							style={
-								styles.input
-							}
-							id="code"
-							name="code"
-							title="code"
-							/>
-							
-						<button type="submit" className='button'>Send Code</button>
-					</form> 
-                    </div>
-					
-				</div>
-		} </>
-	);
+              <div className="form-group">
+                <input
+                  type="password"
+                  {...formik.getFieldProps("password")}
+                  placeholder="password"
+                  style={styles.input}
+                />
+                {formik.errors.password && formik.touched.password && (
+                  <p className="text-danger">{formik.errors.password}</p>
+                )}
+              </div>
+              <div className="form-group">
+                <input
+                  type="text"
+                  {...formik.getFieldProps("code")}
+                  placeholder="Code"
+                  style={styles.input}
+                />
+                {formik.errors.code && formik.touched.code && (
+                  <p className="text-danger">{formik.errors.code}</p>
+                )}
+              </div>
+              <button type="submit" className="button">
+                Send Code
+              </button>
+            </form>
+          </div>
+        </div>
+      )}{" "}
+    </>
+  );
 }
 const styles = {
-	...commonStyles,
-	textarea: {
-		height: 120,
-		resize: 'vertical',
-		paddingTop: '10px',
-		borderRadius: 10
-	}
+  ...commonStyles,
+  textarea: {
+    height: 120,
+    resize: "vertical",
+    paddingTop: "10px",
+    borderRadius: 10,
+  },
 };
 
 export default ForgetPassword;

@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 
-body{
+
+body, *{
 	font-family: "Montserrat", sans-serif; 
 	text-decoration: none !important;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* Styles for the container */
@@ -113,6 +116,10 @@ body{
 	color: var(--main-color-white)!important;
 }
 
+.dancing-font {
+  font-family: "Dancing Script", cursive;
+}
+
 .pagination {
 	flex-direction: row;
 }
@@ -154,7 +161,8 @@ input[type="file" i]  {
 	background-color: white;
     border-radius: 18px;
 	padding: 2rem;
-	margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
   
 }
 
@@ -186,7 +194,7 @@ input[type="file" i]  {
   font-size: 2rem;
 }
 
-.container .arrow, .component-container .arrow {
+.container .arrow, .component-container .arrow, .arrow-button .arrow {
   width: fit-content;
   border: 1px solid #d1d1d1;
   border-radius: 50%;
@@ -207,4 +215,10 @@ input[type="file" i]  {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+
+
+.required {
+  color: red;
+  margin-left: 2px;
 }

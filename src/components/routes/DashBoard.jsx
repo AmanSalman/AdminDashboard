@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Dashboard.css';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { PiBooks } from 'react-icons/pi';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { BiCategory } from 'react-icons/bi';
 import { FaTruck, FaUsers } from 'react-icons/fa';
 import logo from "../../assets/Logo.png";
@@ -10,14 +10,12 @@ import Loader from '../Loader/Loader';
 import { UserContext } from '../context/User';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+
 const Dashboard = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [isOpenC, setIsOpenC] = useState(false);
+    const [isOpenBook, setIsOpenBook] = useState(false);
+    const [isOpenCoupon, setIsOpenCoupon] = useState(false);
     const [isOpenOrder, setIsOpenOrder] = useState(false);
-    const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
+    const [isOpenCategory, setIsOpenCategory] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [orders, setOrders] = useState([]);
     const { token } = useContext(UserContext);
@@ -65,23 +63,17 @@ const Dashboard = () => {
                 <div className="Dashboardsec2">
                     <span className="DashTitle">PAGES</span>
                     <ul>
-                        {/* <li>
-                        <FaTruck className='DashIcon' />
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 99+</span>
-                        <Link to={'/orders'}>Order</Link>
-                        </li> */}
-
-<li>
-                            <button type="button " className='p-0' onClick={() => setIsOpenOrder(!isOpenOrder)}
+                        <li>
+                            <button type="button" className='p-0' onClick={() => setIsOpenOrder(!isOpenOrder)}
                                 aria-expanded={isOpenOrder ? "true" : "false"}>
 
-                                <PiBooks className='DashIcon' />
+                                <FaTruck className='DashIcon' />
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {orders}</span>
                                 <span><a href="#">Orders</a> </span>
                                 
                                 {isOpenOrder ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
                             </button>
-                            <div className={`collapse ${isOpenOrder ? 'show' : ''}`} id="booksDropdown">
+                            <div className={`collapse ${isOpenOrder ? 'show' : ''}`} id="ordersDropdown">
                                 <ul className="flex-column">
                                         <Link to="/orders" activeclassname="active">
                                           Pending Orders
@@ -100,17 +92,17 @@ const Dashboard = () => {
                         <li>
                             <FaUsers className="DashIcon"/>
                             <Link to={'/users'}>Customer</Link>
-                            </li>
+                        </li>
                         <li>
-                            <button type="button " className='p-0' onClick={() => setIsOpen(!isOpen)}
-                                aria-expanded={isOpen ? "true" : "false"}>
+                            <button type="button" className='p-0' onClick={() => setIsOpenBook(!isOpenBook)}
+                                aria-expanded={isOpenBook ? "true" : "false"}>
 
                                 <PiBooks className='DashIcon' />
                                 <span><a href="#">Book</a> </span>
                                 
-                                {isOpen ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
+                                {isOpenBook ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
                             </button>
-                            <div className={`collapse ${isOpen ? 'show' : ''}`} id="booksDropdown">
+                            <div className={`collapse ${isOpenBook ? 'show' : ''}`} id="booksDropdown">
                                 <ul className="flex-column">
                                         <Link to="/books" activeclassname="active">
                                           Books
@@ -123,15 +115,15 @@ const Dashboard = () => {
                             </div>
                         </li>
                         <li>
-                            <button type="button" className='p-0' onClick={() => setCategoriesDropdownOpen(!categoriesDropdownOpen)}
-                                aria-expanded={categoriesDropdownOpen ? "true" : "false"}>
+                            <button type="button" className='p-0' onClick={() => setIsOpenCategory(!isOpenCategory)}
+                                aria-expanded={isOpenCategory ? "true" : "false"}>
 
                                 <BiCategory className='DashIcon' />
                                 <span><a href="#">Category</a> </span>
                                 
-                                {isOpen ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
+                                {isOpenCategory ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
                             </button>
-                            <div className={`collapse ${categoriesDropdownOpen ? 'show' : ''}`} id="booksDropdown">
+                            <div className={`collapse ${isOpenCategory ? 'show' : ''}`} id="categoriesDropdown">
                                 <ul className="flex-column">
                                         <Link to="/categories" activeclassname="active">
                                           Categories
@@ -144,15 +136,15 @@ const Dashboard = () => {
                             </div>
                         </li>
                         <li>
-                            <button type="button " className='p-0' onClick={() => setIsOpenC(!isOpenC)}
-                                aria-expanded={isOpenC ? "true" : "false"}>
+                            <button type="button" className='p-0' onClick={() => setIsOpenCoupon(!isOpenCoupon)}
+                                aria-expanded={isOpenCoupon ? "true" : "false"}>
 
                                 <PiBooks className='DashIcon' />
-                                <span><a href="">Coupon</a> </span>
+                                <span><a href="#">Coupon</a> </span>
                                 
-                                {isOpenC ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
+                                {isOpenCoupon ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}
                             </button>
-                            <div className={`collapse ${isOpenC ? 'show' : ''}`} id="booksDropdown">
+                            <div className={`collapse ${isOpenCoupon ? 'show' : ''}`} id="couponsDropdown">
                                 <ul className="flex-column">
                                         <Link to="/coupons" activeclassname="active">
                                         Coupons

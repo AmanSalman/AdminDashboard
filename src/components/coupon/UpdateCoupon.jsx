@@ -9,13 +9,13 @@ import { toast } from 'react-toastify';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 import Error from '../shared/Error';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from './Coupon.validation';
+import { updateCouponSchema } from './Coupon.validation';
 
 
 const UpdateCoupon = () => {
     const { id } = useParams();
     const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(updateCouponSchema)
     });
     const [loading, setLoading] = useState(true);
     const { token } = useContext(UserContext);

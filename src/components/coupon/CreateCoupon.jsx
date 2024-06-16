@@ -7,12 +7,12 @@ import { UserContext } from '../context/User';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
-import { schema } from './Coupon.validation';
+import { createCouponSchema } from './Coupon.validation';
 
 
 const CreateCoupon = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(createCouponSchema)
   });
   const { token } = useContext(UserContext);
   const [loading, setLoading] = useState(false);

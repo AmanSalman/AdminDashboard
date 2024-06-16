@@ -55,7 +55,7 @@ function EditProfile() {
 
     const inputConfigurations = [
         { id: 'username', title: 'Username', type: 'text', name: 'username' },
-        { id: 'email', title: 'Email', type: 'email', name: 'email' },
+        // { id: 'email', title: 'Email', type: 'email', name: 'email' },
         { id: 'phone', title: 'Phone', type: 'tel', name: 'phone' },
     ];
 

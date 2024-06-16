@@ -57,7 +57,7 @@ function ForgetPassword() {
           <Welcome />
 
           <div className="form-wrapper">
-					<div className='arrow-button'>
+					<div className='arrow-button-register'>
                     <Link to={'/forgotPassword'} className='arrow'>
                         <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
                     </Link>

@@ -251,15 +251,16 @@ export default function Accepted() {
                 </ol>
             </nav>
             <div className='table-container container'>
-                <div className='arrow-button'>
-                    <Link to={'/'} className='arrow'>
-                        <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
-                    </Link>
-                </div>
+                
                 {error ? (
                     <Error message={error} />
                 ) : (
                     <>
+                    <div className='arrow-button'>
+                    <Link to={'/'} className='arrow'>
+                        <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
+                    </Link>
+                </div>
                         {displayedOrders.length > 0 ? (
                             <>
                                 <div className="search-container my-3">

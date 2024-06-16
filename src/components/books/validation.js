@@ -43,7 +43,7 @@ import * as yup from 'yup';
 
 export const createBookSchema = yup.object().shape({
   isbn: yup.string().required('ISBN is required'),
-  title: yup.string().required('Title is required'),
+  title: yup.string().min(3).required('Title is required'),
   price: yup
     .number()
     .transform((value, originalValue) => (originalValue === '' ? null : value))
@@ -54,7 +54,7 @@ export const createBookSchema = yup.object().shape({
     .number()
     .transform((value, originalValue) => (originalValue === '' ? null : value))
     .typeError('Discount must be a number')
-    .positive('Discount must be a positive number')
+    .positive('Discount must be a positive number').min(0)
     .max(100, 'Discount cannot exceed 100%')
     .nullable(),
   categoryName: yup.string().required('Category is required'),
@@ -70,15 +70,45 @@ export const createBookSchema = yup.object().shape({
     .min(0, 'Stock cannot be negative'),
     mainImage: yup.mixed().nullable().test(
       'is-filelist',
-      'Main image must be a FileList',
+      'Main image is required',
       value => !value || (value instanceof FileList && value.length > 0) // Only validate if a FileList is provided
     ),
     subImages: yup.mixed().nullable().test(
       'is-filelist',
-      'Sub images must be a FileList',
+      'Sub images are required',
       value => !value || (value instanceof FileList && value.length > 0) // Only validate if a FileList is provided
     )
 });
+
+
+
+export const updateBookSchema = yup.object().shape({
+  isbn: yup.string(),
+  title: yup.string(),
+  price: yup
+    .number().typeError('Price must be a number').positive('Price must be a positive number')
+    ,
+    Discount: yup
+    .number()
+    .transform((value, originalValue) => (originalValue === '' ? null : value))
+    .typeError('Discount must be a number')
+    .positive('Discount must be a positive number').min(0)
+    .max(100, 'Discount cannot exceed 100%')
+    .nullable(),
+  categoryId: yup.string(),
+  description: yup.string(),
+  publishingHouse: yup.string(),
+  status: yup.string(),
+  stock: yup
+    .number()
+    .typeError('Stock must be a number')
+    .required('Stock is required')
+    .integer('Stock must be an integer')
+    .min(0, 'Stock cannot be negative'),
+    mainImage: yup
+    .mixed().optional()
+});
+
 
 
 

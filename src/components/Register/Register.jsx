@@ -190,8 +190,9 @@ const Register = () => {
                 resetForm();
             }
         } catch (error) {
+            const {response} = error;
+            toast.error(response.data.message || "Registration failed. Please try again later."); 
             console.error('Registration failed:', error);
-            toast.error("Registration failed. Please try again later.");
         } finally {
             setLoading(false);
         }

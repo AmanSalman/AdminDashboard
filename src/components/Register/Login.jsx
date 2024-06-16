@@ -137,12 +137,14 @@ const Login = () => {
     let { token, setToken } = useContext(UserContext);
 
     useEffect(() => {
-        setLoading(false); // Set loading to false after component is mounted
+        if (token) {
+            navigate(-1);
+    }else {
+        setLoading(false); // Set loading to false after component is mounted 
+    }
     }, []);
 
-    if (token) {
-        navigate(-1);
-    }
+    
 
     const initialValues = {
         email: '',

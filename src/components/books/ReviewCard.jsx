@@ -87,6 +87,7 @@ import Pagination from '../shared/Pagination';
 import { toast } from 'react-toastify';
 import Loader from '../Loader/Loader';
 import ConfirmationModal from '../shared/ConfirmationModal.jsx'; // Import the ConfirmationModal component
+import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
 
 function ReviewCard() {
   const { id } = useParams();
@@ -147,6 +148,9 @@ function ReviewCard() {
 
   return (
     <div className="container">
+        <Link to={'/books'} className="arrow">
+          <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/>
+        </Link>
       <div className="row">
         {currentReviews.map((review) => (
           <div key={review._id} className="col-md-12">

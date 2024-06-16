@@ -158,7 +158,6 @@ function Home() {
   <ul className="dropdown-menu">
     <li><Link className="dropdown-item" to={'/profile'}>profile</Link></li>
     <li><button className="dropdown-item" onClick={handleLogout}>Log out</button></li>
-    <li><a className="dropdown-item" href="#">Menu item</a></li>
   </ul>
 </div>
 </div>

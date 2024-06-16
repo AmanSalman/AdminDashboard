@@ -245,87 +245,94 @@ import './book.css';
 import Loader from '../Loader/Loader';
 import { toast } from 'react-toastify';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
-import { createBookSchema } from './validation.js'
+import { updateBookSchema } from './validation.js';
 
 const UpdateBook = () => {
     const { id } = useParams();
     const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({
-        resolver: yupResolver(createBookSchema)
+        resolver: yupResolver(updateBookSchema)
+    });
+    const { token } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const [book, setBook] = useState({
+        isbn: '',
+        title: '',
+        price:0,
+        description: '',
+        publishingHouse: '',
+        Discount: '',
+        stock: '',
+        categoryName:'',
+        categoryId:'',
+        status: '',
+        mainImage: []
     });
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { token } = useContext(UserContext);
-    const [initialBookData, setInitialBookData] = useState({});
-    const navigate = useNavigate();
     const [mainImage, setMainImage] = useState(null);
     const [mainImageUrl, setMainImageUrl] = useState('');
 
-    const fetchBook = async () => {
-        try {
-            setLoading(true);
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/book/${id}`, {
-                headers: {
-                    Authorization: `AmanGRAD__${token}`
-                }
-            });
-            const book = data.book;
-            setInitialBookData(book);
-            setValue('isbn', book.isbn);
-            setValue('title', book.title);
-            setValue('price', book.price);
-            setValue('description', book.description);
-            setValue('publishingHouse', book.publishingHouse);
-            setValue('categoryId', book.categoryId);
-            setValue('Discount', book.Discount);
-            setValue('stock', book.stock);
-            setValue('status', book.status);
-            setMainImageUrl(book.mainImage.secure_url);
-            setLoading(false)
-        } catch (error) {
-            const { response } = error;
-            toast.error(response?.data?.message || 'Failed to fetch book');
-            console.error(error);
-            setLoading(false)
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchCategories = async () => {
-        try {
-            setLoading(true)
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/category`, {
-                headers: {
-                    Authorization: `AmanGRAD__${token}`
-                }
-            });
-            setCategories(data.Categories);
-            setLoading(false)
-        } catch (error) {
-            const { response } = error;
-            toast.error(response?.data?.message || 'Failed to fetch categories');
-            console.error(error);
-            setLoading(false)
-        } finally {
-            setLoading(false)
-        }
-    };
-
-    const getChangedData = (currentValues, initialValues) => {
-        const changedData = {};
-        for (const key in currentValues) {
-            if (currentValues[key] !== initialValues[key]) {
-                changedData[key] = currentValues[key];
+    useEffect(() => {
+        const fetchBook = async () => {
+            try {
+                setLoading(true);
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/book/${id}`, {
+                    headers: {
+                        Authorization: `AmanGRAD__${token}`
+                    }
+                });
+                const { isbn, title, price, description, publishingHouse,categoryName, Discount, stock, status, mainImage, categoryId } = data.book;
+                setBook({
+                    isbn,
+                    title,
+                    price,
+                    description,
+                    publishingHouse,
+                    categoryName,
+                    categoryId,
+                    Discount,
+                    stock,
+                    status,
+                    mainImage,
+                });
+                console.log(book)
+                setMainImageUrl(mainImage.secure_url);
+            } catch (error) {
+                const errorMessage = error.response?.data?.message || 'Failed to fetch book';
+                toast.error(errorMessage);
+                console.error(error);
+            } finally {
+                setLoading(false);
             }
-        }
-        return changedData;
-    };
+        };
+
+        const fetchCategories = async () => {
+            try {
+                setLoading(true);
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/category`, {
+                    headers: {
+                        Authorization: `AmanGRAD__${token}`
+                    }
+                });
+                setCategories(data.Categories);
+            } catch (error) {
+                const errorMessage = error.response?.data?.message || 'Failed to fetch categories';
+                toast.error(errorMessage);
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBook();
+        fetchCategories();
+    }, [id, token]);
 
     const handleMainImageChange = (e) => {
         const file = e.target.files[0];
         setMainImage(file);
 
-        // Show preview of the main image
         const reader = new FileReader();
         reader.onload = () => {
             setMainImageUrl(reader.result);
@@ -333,9 +340,15 @@ const UpdateBook = () => {
         reader.readAsDataURL(file);
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async () => {
         const currentValues = getValues();
-        const changedData = getChangedData(currentValues, initialBookData);
+        const changedData = Object.keys(currentValues).reduce((acc, key) => {
+            if (currentValues[key] !== book[key] && currentValues[key]!='') {
+                acc[key] = currentValues[key];
+            }
+            return acc;
+        }, {}); 
+        console.log(changedData)
 
         const formData = new FormData();
         for (const key in changedData) {
@@ -356,21 +369,32 @@ const UpdateBook = () => {
 
             if (data.message === "success") {
                 toast.success("Book updated successfully");
-                navigate(`/Update/${id}`);
+                navigate(`/update/${id}`);
             }
         } catch (error) {
-            const { response } = error;
-            toast.error(response?.data?.message || 'Failed to update book');
+            if (error.response && error.response.data) {
+                const { message, error: validationErrors } = error.response.data;
+                if (message === 'validation error' && Array.isArray(validationErrors)) {
+                    validationErrors.forEach(validationError => {
+                        const { categoryId } = validationError;
+                        // Display error message for specific field
+                        if (categoryId) {
+                            toast.error(`Category name: ${categoryId}`);
+                        } else {
+                            toast.error(message);
+                        }
+                    });
+                } else {
+                    toast.error(message || 'Failed to update book');
+                }
+            } else {
+                toast.error('Failed to update book');
+            }
             console.error(error);
         } finally {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchBook();
-        fetchCategories();
-    }, []);
 
     if (loading) {
         return <Loader />;
@@ -387,39 +411,39 @@ const UpdateBook = () => {
                 </li>
             </ol>
             <div className="component-container updateBook">
-                <Link to={'/'} className="arrow">
+                <Link to={'/books'} className="arrow">
                     <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/>
                 </Link>
                 
                 <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                     <div>
                         <label>ISBN :</label>
-                        <input {...register('isbn')} type="text" />
+                        <input {...register('isbn')} type="text" defaultValue={book.isbn} />
                         {errors.isbn && <p className='text-danger'>{errors.isbn.message}</p>}
                     </div>
                     <div>
                         <label>Title :</label>
-                        <input {...register('title')} type="text" />
+                        <input {...register('title')} type="text" defaultValue={book.title} />
                         {errors.title && <p className='text-danger'>{errors.title.message}</p>}
                     </div>
                     <div>
                         <label>Price :</label>
-                        <input {...register('price')} type="number" />
+                        <input {...register('price')} type="number" defaultValue={book.price} />
                         {errors.price && <p className='text-danger'>{errors.price.message}</p>}
                     </div>
                     <div>
                         <label>Description :</label>
-                        <textarea {...register('description')} />
+                        <textarea {...register('description')} defaultValue={book.description} />
                         {errors.description && <p className='text-danger'>{errors.description.message}</p>}
                     </div>
                     <div>
                         <label>Publishing House :</label>
-                        <input {...register('publishingHouse')} type="text" />
+                        <input {...register('publishingHouse')} type="text" defaultValue={book.publishingHouse} />
                         {errors.publishingHouse && <p className='text-danger'>{errors.publishingHouse.message}</p>}
                     </div>
                     <div>
                         <label>Category :</label>
-                        <select {...register('categoryId')}>
+                        <select {...register('categoryId')} defaultValue={book.categoryId}>
                             {categories.map(category => (
                                 <option key={category._id} value={category._id}>
                                     {category.name}
@@ -430,17 +454,17 @@ const UpdateBook = () => {
                     </div>
                     <div>
                         <label>Discount :</label>
-                        <input {...register('Discount')} type="number" />
+                        <input {...register('Discount')} type="number" defaultValue={book.Discount} />
                         {errors.Discount && <p className='text-danger'>{errors.Discount.message}</p>}
                     </div>
                     <div>
                         <label>Stock :</label>
-                        <input {...register('stock')} type="number" />
+                        <input {...register('stock')} type="number" defaultValue={book.stock} />
                         {errors.stock && <p className='text-danger'>{errors.stock.message}</p>}
                     </div>
                     <div>
                         <label>Status :</label>
-                        <select {...register('status')}>
+                        <select {...register('status')} defaultValue={book.status}>
                             <option value="Active">Active</option>
                             <option value="Disabled">Disabled</option>
                         </select>
@@ -455,7 +479,6 @@ const UpdateBook = () => {
                     <div>
                         <label>Sub Images :</label>
                         <Link to={`/books/update-subimages/${id}`}>Update Sub Images</Link>
-                        {errors.subImages && <p className='text-danger'>{errors.subImages.message}</p>}
                     </div>
                     <button type="submit" className="button">Update Book</button>
                 </form>

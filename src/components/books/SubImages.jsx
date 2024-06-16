@@ -246,7 +246,7 @@ const SubImages = () => {
                 </li>
             </ol>
             <div className="component-container">
-                <Link to={'/'} className="arrow">
+                <Link to={`/Update/${id}`} className="arrow">
                     <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/>
                 </Link>
                 <div className="subimages-container">

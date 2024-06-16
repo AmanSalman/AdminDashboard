@@ -197,20 +197,20 @@ const CreateBook = () => {
       formData.append('isbn', book.isbn);
       formData.append('title', book.title);
       formData.append('price', book.price);
-      formData.append('Discount', book.Discount);
+      formData.append('Discount', book.Discount || 0);
       formData.append('categoryName', book.categoryName);
       formData.append('description', book.description);
       formData.append('publishingHouse', book.publishingHouse);
       formData.append('mainImage', book.mainImage[0]);
       formData.append('status', book.status);
-      formData.append('stock', book.stock);
+      formData.append('stock', book.stock || 1);
 
       for (let i = 0; i < book.subImages.length; i++) {
         formData.append('subImages', book.subImages[i]);
         console.log(book.subImages[i]);
       }
 
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL3}/book`, formData, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL2}/book`, formData, {
         headers: {
           Authorization: `AmanGRAD__${token}`
         }

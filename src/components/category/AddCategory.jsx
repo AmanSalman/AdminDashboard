@@ -19,10 +19,15 @@ function AddCategory() {
         name: '',
         image: null, // Set initial value to null for file input
     };
+    const handleFieldChange = (event) => {
+        formik.setFieldValue('image', event.target.files[0]);
+        setClearErrors(true); // Set clearErrors to true when changing fields
+    };
 
     const onSubmit = async (values, { resetForm }) => {
         setLoading(true);
         try {
+            console.log(values)
             const formData = new FormData();
             formData.append("name", values.name);
             formData.append("image", values.image);
@@ -34,8 +39,7 @@ function AddCategory() {
                 resetForm();
             }
         } catch (error) {
-            const { response } = error;
-            toast.error(response?.data?.message || "An error occurred");
+            toast.error("An error occurred, try again later");
             console.log(error);
         } finally {
             setLoading(false);
@@ -50,10 +54,6 @@ function AddCategory() {
         validateOnBlur: clearErrors, // Validate on blur only if clearErrors is true
     });
 
-    const handleFieldChange = (event) => {
-        formik.setFieldValue('image', event.target.files[0]);
-        setClearErrors(true); // Set clearErrors to true when changing fields
-    };
 
     const handleNameChange = (event) => {
         formik.handleChange(event);

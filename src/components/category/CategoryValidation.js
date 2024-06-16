@@ -4,8 +4,7 @@ import * as Yup from 'yup';
 export const categorySchema = Yup.object().shape({
     name: Yup.string()
         .required('Category Name is required')
-        .min(2, 'Category Name must be at least 2 characters')
-        .max(30, 'Category Name must be at most 30 characters')
+        .min(3, 'Category Name must be at least 2 characters')
         .trim('Category Name should not contain leading/trailing spaces'),
         image: Yup.mixed()
   .nullable()

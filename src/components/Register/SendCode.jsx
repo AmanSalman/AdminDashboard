@@ -150,7 +150,7 @@ function SendCode() {
          <Welcome/>
 
           <div className="form-wrapper">
-					<div className='arrow-button'>
+					<div className='arrow-button-register'>
                     <Link to={'/login'} className='arrow'>
                         <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
                     </Link>

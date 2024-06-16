@@ -3,7 +3,7 @@ import './Dashboard.css';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { PiBooks } from 'react-icons/pi';
 import { Link, Outlet } from 'react-router-dom';
-import { BiCategory } from 'react-icons/bi';
+import { BiCategory, BiSolidCoupon } from 'react-icons/bi';
 import { FaTruck, FaUsers } from 'react-icons/fa';
 import logo from "../../assets/Logo.png";
 import Loader from '../Loader/Loader';
@@ -139,7 +139,7 @@ const Dashboard = () => {
                             <button type="button" className='p-0' onClick={() => setIsOpenCoupon(!isOpenCoupon)}
                                 aria-expanded={isOpenCoupon ? "true" : "false"}>
 
-                                <PiBooks className='DashIcon' />
+                                <BiSolidCoupon className='DashIcon' />
                                 <span><a href="#">Coupon</a> </span>
                                 
                                 {isOpenCoupon ? <BsChevronUp fontSize='.8rem'/> : <BsChevronDown fontSize='.8rem' />}

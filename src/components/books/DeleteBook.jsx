@@ -13,15 +13,17 @@ function DeleteBook() {
 
   const deleteBook = async () => {
     try {
+      console.log(id)
       setLoading(true);
-      const {data} = await axios.delete(`${import.meta.env.VITE_API_URL2}/book/${id}`, {
+      const res = await axios.delete(`${import.meta.env.VITE_API_URL2}/book/${id}`, {
         headers: { Authorization: `AmanGRAD__${token}` },
       });
 
-      if (data.message === 'success') {
+      if (res.status ===200) {
         toast.success("Book deleted successfully");
       } 
     } catch (error) {
+      console.error(error);
       const {response} = error;
             toast.error(response?.data?.message || "Failed to delete");
     } finally {

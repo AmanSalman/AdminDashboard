@@ -5,11 +5,12 @@
     flex-direction: column;
 }
 
-.subImages, .main-img  {
-    width: 100px;
-    border-radius: 50% !important;
+ .main-img  {
+    width: 50%;
 }
-
+.subImages{
+    width: 250px;
+}
 .main-img {
     margin-bottom: 1rem;
 }

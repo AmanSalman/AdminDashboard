@@ -327,7 +327,6 @@
 // export default SentOrders;
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import '../CSSFiles/general.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader.jsx';
 import Reject from '../../assets/cross-button.png';

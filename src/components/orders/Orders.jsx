@@ -326,7 +326,6 @@
 // export default Orders;
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import '../CSSFiles/general.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader.jsx';
 import Accept from '../../assets/accept (2).png';

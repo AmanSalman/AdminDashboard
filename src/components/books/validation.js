@@ -59,7 +59,7 @@ export const createBookSchema = yup.object().shape({
     .nullable(),
   categoryName: yup.string().required('Category is required'),
   description: yup.string().required('Description is required'),
-  publishingHouse: yup.string().required('Publishing house is required'),
+  publishingHouse: yup.string(),
   status: yup.string().required('Status is required'),
   stock: yup
     .number()

@@ -191,7 +191,8 @@ function User() {
       const { data } = await axios.get(`${import.meta.env.VITE_API_URL2}/user/`, {
         headers: { Authorization: `AmanGRAD__${token}` }
       });
-      setUsers(data.users);
+      const Users  = data.users.filter(user=> user.role === 'User')
+      setUsers(Users);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -255,7 +256,8 @@ function User() {
         <Link to={'/'} className="arrow">
           <TbArrowBigLeftLineFilled className="main-color-text arrowback-pages" />
         </Link>
-        {error ? <Error message={error} /> :
+        {error ? (<Error message={error} /> ):
+        users?.length > 0 ?
           <>
             <div className="search-container">
               <select
@@ -322,7 +324,7 @@ function User() {
               </tbody>
             </table>
             <Pagination currentPage={currentPage} totalPages={npage} onPageChange={setCurrentPage} />
-          </>
+          </>: (<p className="text-center">no users found</p>)
         }
       </div>
 

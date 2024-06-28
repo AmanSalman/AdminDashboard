@@ -303,7 +303,8 @@ function Books() {
         </Link>
         {error != null ? (
           <Error message={error} />
-        ) : (
+        ) : 
+          books?.length > 0 ?
           <>
             <div className="search-container">
               <select
@@ -396,7 +397,7 @@ function Books() {
 
             <Pagination currentPage={currentPage} totalPages={npage} onPageChange={handlePageChange} />
           </>
-        )}
+        :  (<p className="text-center">no Books found</p>)}
       </div>
       <ConfirmationModal
         isOpen={modalIsOpen}

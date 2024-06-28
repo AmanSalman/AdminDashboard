@@ -241,8 +241,9 @@ function Category() {
           <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages'/>
         </Link>
         {error != null ? (
-          <Error />
-        ) : (
+          <Error message={error} />
+        ) : 
+        categories?.length > 0 ?
           <>
             <div className="search-container my-3">
               <input
@@ -303,7 +304,7 @@ function Category() {
             </table>
             <Pagination currentPage={currentPage} totalPages={npage} onPageChange={handlePageChange} />
           </>
-        )}
+       : (<p className="text-center">no categories found</p>)}
       </div>
       <ConfirmationModal
         isOpen={modalIsOpen}

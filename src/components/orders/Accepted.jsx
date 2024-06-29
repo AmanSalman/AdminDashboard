@@ -278,6 +278,7 @@ export default function Accepted() {
                                     <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>username</th>
                                             <th>Location</th>
                                             <th>Total Price</th>
                                             <th>Phone</th>
@@ -291,6 +292,7 @@ export default function Accepted() {
                                         {displayedOrders.map((order, index) => (
                                             <tr key={order._id}>
                                                 <td>{firstIndex + index + 1}</td>
+                                                <td>{order.userId.username}</td>
                                                 <td>{order.Address}</td>
                                                 <td>{order.finalPrice}</td>
                                                 <td>{order.phone}</td>

@@ -434,13 +434,13 @@ const UpdateCategory = () => {
                 <Link to={'/'} className='arrow'>
                     <TbArrowBigLeftLineFilled className='main-color-text arrowback-pages' />
                 </Link>
-                <div className='d-flex align-items-center w-50'>
+                <div className='d-flex align-items-center ms-4 w-50'>
                     {imageUrl && (
                         <img
                             src={imageUrl}
                             alt='Category Image'
-                            style={{ borderRadius: '50%' }}
-                            className='img-fluid w-25'
+                            style={{ border:"solid 1px #dcdbdb", padding:'1.5rem' }}
+                            className='img-fluid w-50'
                         />
                     )}
                 </div>

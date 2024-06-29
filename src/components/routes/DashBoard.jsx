@@ -91,7 +91,7 @@ const Dashboard = () => {
                         </li>
                         <li>
                             <FaUsers className="DashIcon"/>
-                            <Link to={'/users'}>Customer</Link>
+                            <Link to={'/users'}>Customers</Link>
                         </li>
                         <li>
                             <button type="button" className='p-0' onClick={() => setIsOpenBook(!isOpenBook)}

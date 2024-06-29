@@ -62,12 +62,12 @@ const Profile = () => {
     <div className="col-md-5 border-right">
       <div className="p-3 py-5">
         <div className="row mt-2">
-          <div className=""><label className="labels">Username :</label><input type="text" className="form-control" value={userData.username} placeholder="Username" readOnly /></div>
+          <div className="mb-3"><label className="labels">Username :</label><input type="text" className="form-control" value={userData.username} placeholder="Username" readOnly /></div>
         </div>
         <div className="row mb-3">
-          <div className="col-md-12"><label className="labels">Mobile Number :</label><input type="text" className="form-control" placeholder="User phone" readOnly value={userData.phone} /></div>
-          <div className="col-md-12"><label className="labels">Status :</label><input type="text" className="form-control" placeholder="User status" readOnly value={userData.status}/></div>
-          <div className="col-md-12"><label className="labels">Email :</label><input type="text" className="form-control" placeholder="User Email" readOnly value={userData.email} /></div>
+          <div className="col-md-12 mb-3"><label className="labels">Mobile Number :</label><input type="text" className="form-control" placeholder="User phone" readOnly value={userData.phone} /></div>
+          <div className="col-md-12 mb-3"><label className="labels">Status :</label><input type="text" className="form-control" placeholder="User status" readOnly value={userData.status}/></div>
+          <div className="col-md-12 mb-3"><label className="labels">Email :</label><input type="text" className="form-control" placeholder="User Email" readOnly value={userData.email} /></div>
         </div>
         <div className="text-center mt-1 w-50"><Link className="btn button" to={'/Editprofile'}>Update Profile</Link></div>
       </div>

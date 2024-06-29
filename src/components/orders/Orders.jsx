@@ -363,6 +363,7 @@ function Orders() {
                 }
             });
             const pending = data.orders.filter(order => order.status === 'pending')
+            console.log(pending)
             setOrders(pending);
             setIsLoading(false);
         } catch (error) {
@@ -466,6 +467,7 @@ function Orders() {
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>username</th>
                                         <th>Location</th>
                                         <th>Total Price</th>
                                         <th>Phone</th>
@@ -479,6 +481,7 @@ function Orders() {
                                     {displayedOrders.map((order, index) => (
                                         <tr key={order._id}>
                                             <td>{firstIndex + index + 1}</td>
+                                            <td>{order.userId.username}</td>
                                             <td>{order.Address}</td>
                                             <td>{order.finalPrice}</td>
                                             <td>{order.phone}</td>

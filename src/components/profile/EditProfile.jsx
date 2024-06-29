@@ -17,14 +17,17 @@ function EditProfile() {
     const navigate = useNavigate();
     const initialValues = {
         username: '',
-        email: '',
         phone: '',
     };
 
     const onSubmit = async (values) => {
+        const filteredValues = Object.fromEntries(
+            Object.entries(values).filter(([_, value]) => value !== '')
+        );
+        
         setLoading(true);
         try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_API_URL2}/auth/update`, values, {
+            const { data } = await axios.patch(`${import.meta.env.VITE_API_URL2}/auth/update`, filteredValues, {
                 headers: { Authorization: `AmanGRAD__${token}` },
             });
             setLoading(false);
@@ -55,7 +58,6 @@ function EditProfile() {
 
     const inputConfigurations = [
         { id: 'username', title: 'Username', type: 'text', name: 'username' },
-        // { id: 'email', title: 'Email', type: 'email', name: 'email' },
         { id: 'phone', title: 'Phone', type: 'tel', name: 'phone' },
     ];
 

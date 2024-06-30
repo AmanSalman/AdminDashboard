@@ -31,13 +31,14 @@ function ForgetPassword() {
       );
       console.log(data);
       if (data.message == "success") {
-        toast.success("registered successfully");
+        toast.success("your password rest successfully");
         navigate("/login");
         setLoading(false);
       }
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      toast.error('something went wrong, try again later');
       console.log(error);
     }
   };

@@ -111,6 +111,7 @@ import { Sendcode } from './validation.js';
 import './Register.css'
 import Welcome from './Welcome.jsx';
 import { TbArrowBigLeftLineFilled } from 'react-icons/tb';
+import { toast } from 'react-toastify';
 
 function SendCode() {
   const [loading, setLoading] = useState(false);
@@ -129,11 +130,11 @@ function SendCode() {
       if (data.message === 'success') {
         navigate('/sendcode');
       } else {
-        setErrorMessage('Failed to send code. Please try again.');
+        toast('Failed to send code. Please try again.');
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage('An error occurred. Please try again.');
+      toast('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -171,7 +172,7 @@ function SendCode() {
               {formik.errors.email && formik.touched.email && <p className="text-danger">{formik.errors.email}</p>}
               {errorMessage && <p className="text-danger">{errorMessage}</p>}
               <button type="submit" className="button">
-                Send Code
+                Change Password
               </button>
             </form>
           </div>

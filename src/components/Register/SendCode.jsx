@@ -128,6 +128,7 @@ function SendCode() {
       const { data } = await axios.patch(`${import.meta.env.VITE_API_URL2}/auth/sendCode`, user);
       console.log(data);
       if (data.message === 'success') {
+	      toast.success('code sent, check your email')
         navigate('/sendcode');
       } else {
         toast('Failed to send code. Please try again.');
